@@ -1,0 +1,126 @@
+/*主体样式设置*/
+.bkgd{
+	width: 100%;
+	height: 750px;
+	background: url(../images/201801161116219594.jpg) no-repeat;
+	position: relative;
+}
+/*响应式log更换设置*/
+.loginnotice img{
+	display: none;
+	margin:0 auto;
+}
+h4{
+	text-align: center;
+	font-size: 23px;
+	color: #4d4d4d;
+	font-family: arial;
+	margin:10px auto;
+	padding-bottom: 10px;
+}
+/*响应式布局设置*/
+.formmodule{
+	width: 30%;
+	float: right;
+	background: #fff;
+	vertical-align: middle
+	position:absolute;
+	top: 100px;
+	left:-100px;
+	padding:20px;
+}
+@media (max-width:1360px){
+	.formmodule{
+	width: 40%;
+	float: right;
+	background: #fff;
+	vertical-align: middle
+	position:absolute;
+	top: 100px;
+	left:-50px;
+	padding:20px;
+	}
+}
+@media (max-width:970px){
+	.formmodule{
+	width: 70%;
+	float: right;
+	background: #fff;
+	vertical-align: middle
+	position:absolute;
+	top: 100px;
+	left:-120px;
+	padding:20px;
+	}
+	.bkgd{background: url();}
+	.loginnotice h4{display: none;}
+	.loginnotice img{display: block;}
+}
+@media (max-width:750px){
+	.formmodule{
+	width: 100%;
+	float: right;
+	background: #fff;
+	vertical-align: middle
+	position:absolute;
+	top: 100px;
+	left:0px;
+	padding:20px;
+	}
+}
+/*表单输入框高度设置*/
+.user input,.passwd input,.loginbutton button,.regeditbutton button{
+	height: 50px;
+}
+/*附加功能样式设置*/
+.additionfather{margin-bottom:5px;}
+.addition{
+	font-size: 12px;
+	color: #666;
+	font-family: arial;
+	font-weight:normal;
+	padding-top:10px;
+}
+.autologin span{
+	padding-left: 5px;
+	line-height: 20px;
+}
+.addition span{
+	color: #666;
+	float:right;
+}
+/*其它方式登录设置*/
+.other{
+	text-align: center;
+	font-size: 12px;
+	padding:10px;
+}
+.otherpadding{
+	padding-left: 27px;
+	width: 200px;
+	height: 25px;
+	margin:0 auto;
+}
+.otherlog img{width: 15%;}
+/*尾部设置*/
+.btns{
+	width: 100%;
+	margin-bottom: 100px;
+}
+.btns div{
+	text-align: center;
+	font-size: 12px;
+}
+.btns ul{
+	margin:5px auto;
+	list-style: none;
+}
+.footul img{
+	width: 20%;
+	padding-right:5px;
+}
+.buttonstyle li{
+	display:inline-block;
+	padding-right: 25px;
+}
+#specificpic{width: 7%;}
