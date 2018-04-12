@@ -31,6 +31,23 @@ def insert(request):
 def ulist(request):
 	# 获取数据
 	ob = Users.objects.all()
+	types = request.GET.get('type', None)
+	if types == 'username':
+		ob = Users.objects.filter(username__contains=request.GET.get('keywords', ''))
+	elif types == 'email':
+		ob = Users.objects.filter(email__contains=request.GET.get('keywords', ''))	
+	elif types == 'state':
+		if request.GET.get('keywords', '') == '会员':
+			ob = Users.objects.filter(state=1).order_by('id')
+		elif request.GET.get('keywords','') == '禁用':
+			ob = Users.objects.filter(state=2).order_by('id')
+		elif request.GET.get('keywords','') == '管理员':
+			ob = Users.objects.filter(state=0).order_by('id')
+		else:
+			ob = Users.objects.filter().order_by('id')
+	else:
+		ob = Users.objects.filter().order_by('id')
+
 	# 实例化分页类
 	paginator = Paginator(ob, 2)
 	# 获取当前页码
@@ -76,10 +93,6 @@ def uupdate(request):
 			os.remove(path_img)
 	ob.save()
 	return HttpResponse("<script>alert('修改成功'),location.href='/ulist'</script>")
-
-
-
-
 
 	
 

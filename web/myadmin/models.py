@@ -1,5 +1,6 @@
 from django.db import models 
 
+
 class Users(models.Model):
 	username = models.CharField(max_length=32, unique=True)
 	name = models.CharField(max_length=16, null=True) 
@@ -10,25 +11,18 @@ class Users(models.Model):
 	phone = models.CharField(max_length=16, null=True)
 	email = models.CharField(max_length=50)
 	state = models.IntegerField(null=True)
-	img = models.ImageField(upload_to='static/public/img', default='static/public/img/9110.jpg')
+	img = models.ImageField(upload_to='static/public/img')
 	addtime = models.DateField(auto_now_add=True)
-
-	# class Meta:
-	# 	db_table = 'userinfo'
-
+	
 	def __str__(self):
 		return self.username
+
 
 class Type(models.Model):	
 	name = models.CharField(max_length=32)
 	pid = models.IntegerField(default=0)
 	path = models.CharField(max_length=255)
-
-	# class Meta:
-	# 	db_table = 'userinfo'
-
-	# def __str__(self):
-	# 	return self.name
+	
 
 class Goods(models.Model):
 	typeid = models.ForeignKey(to='Type', to_field='id')
@@ -43,6 +37,7 @@ class Goods(models.Model):
 	clicknum = models.IntegerField(default=0, null=True)
 	addtime = models.IntegerField()
 
+
 class Orders(models.Model):
 	uid = models.IntegerField()
 	linkman = models.CharField(max_length=32)
@@ -52,6 +47,7 @@ class Orders(models.Model):
 	addtime = models.IntegerField()
 	total = models.DecimalField(max_digits=8, decimal_places=2)
 	status = models.IntegerField(default=0)
+
 
 class Detail(models.Model):
 	orderid = models.OneToOneField(Orders)

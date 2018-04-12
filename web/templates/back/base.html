@@ -209,7 +209,7 @@
                             </li>
     
                             <li class="sidebar-nav-link">
-                                <a href="{% url 'goodslist' %}">
+                                <a href="{% url 'typelist' %}">
                                     <span class="am-icon-angle-right sidebar-nav-link-logo"></span  > 分类管理
                                 </a>
                             </li>
@@ -261,24 +261,7 @@
 
             <!-- 内容区域 -->
             {% block 'forms' %}
-            <div class="tpl-content-wrapper">
-                <div class="container-fluid am-cf">
-                    <div class="row">
-                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                            <div class="page-header-heading">
-                                <span class="am-icon-home page-header-heading-icon">
-                                </span>会员管理
-                            </div>
-                        </div>
-                        <div class="am-u-lg-3 tpl-index-settings-button">
-                            <button type="button" class="page-header-button">
-                                <span class="am-icon-paint-brush">
-                                </span>设置
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          
             {% endblock %}
 
         </div>

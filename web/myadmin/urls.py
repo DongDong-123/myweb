@@ -23,7 +23,7 @@ urlpatterns = [
     # url(r'^form/', views.form, name='form'),
     # url(r'^login/', views.login, name='login'),
     # url(r'^sign_up/', views.sign_up,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   name='sign_up'),
-    # url(r'^table_list_img/', views.table_list_img, name='table_list_img'),
+    url(r'^table_list_img/', views.table_list_img, name='table_list_img'),
     url(r'^table_list/', views.table_list, name='table_list'),
     # url(r'^tables/', views.tables, name='tables'),
     url(r'^uadd/', views.uadd, name='uadd'),
@@ -35,6 +35,8 @@ urlpatterns = [
     # 商品管理
     url(r'^goodslist/', viewsGoods.Goodlist, name='goodslist'),
     url(r'^typeadd/', viewsGoods.typeadd, name='typeadd'),
+    url(r'^typeinsert/', viewsGoods.typeinsert, name='typeinsert'),
+    url(r'^typelist/', viewsGoods.typelist, name='typelist'),
     url(r'^goodsadd/', viewsGoods.goodsadd, name='goodsadd'),
     url(r'^orderlist/', viewsGoods.orderlist, name='orderlist'),
 

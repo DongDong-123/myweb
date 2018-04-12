@@ -10,6 +10,16 @@ def Goodlist(request):
 def typeadd(request):
 	return render(request, 'back/typeadd.html')
 
+def typeinsert(request):
+
+
+
+
+	return HttpResponse('typeinsert')
+
+def typelist(request):
+	return render(request, 'back/typelist.html')
+
 def goodsadd(request):
 	return render(request, 'back/goodsadd.html')
 
