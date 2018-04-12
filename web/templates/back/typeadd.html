@@ -1,0 +1,42 @@
+{% extends './base.html' %}
+
+{% block 'forms' %}
+<div class="tpl-content-wrapper">
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading">
+                    <span class="am-icon-home page-header-heading-icon">
+                    </span>分类管理
+                </div>
+            </div>
+            <div class="am-u-lg-3 tpl-index-settings-button">
+                <button type="button" class="page-header-button">
+                    <span class="am-icon-paint-brush">
+                    </span>设置
+                </button>
+            </div>
+        </div>
+    </div>
+
+<div class="am-u-md-9 am-u-md-offset-1">
+    <form class="am-form am-form-horizontal" action="{% url 'insert' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">分类名称
+        </label>
+        <div class="am-u-sm-10">
+            <input type="text" name="name" id="doc-ipt-3" placeholder="请输入姓名">
+        </div>
+    </div>
+ 
+    <div class="am-form-group">
+        <div class="am-u-sm-10 am-u-sm-offset-2">
+            <button type="submit" class="am-btn am-btn-default">提交
+            </button>
+        </div>
+    </div>
+    </form>
+</div>
+{% endblock %}
+</div>
