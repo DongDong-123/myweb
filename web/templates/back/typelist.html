@@ -36,27 +36,27 @@
 								</span>
                             </div>
                         </div>
-                        <div class="am-u-sm-12">
+                        <div class="am-u-sm-offset-1 am-u-sm-10">
                             <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>分类名</th>
+                                        <th>所属分类</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for i in users %}
-                                
+                                {% for i in typelist %}
                                 <tr class="gradeX">
                                     <td class="am-text-middle">{{ i.id }}</td>
-                                    <td class="am-text-middle">{{ i.username }}</td>
+                                    <!-- 占位 -->
+                                    <td class="am-text-middle">{{ i.name}}</td>
                                     <td class="am-text-middle">
                                         <div class="tpl-table-black-operation">
-                                            <a href="{% url 'uedit' i.id %}"> 
+                                            <a href="{% url 'typeedit' i.id %}"> 
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
-                                            <a href="{% url 'udel' i.id %}" class="tpl-table-black-operation-del">
+                                            <a href="{% url 'typedel' i.id %}" class="tpl-table-black-operation-del">
                                                 <i class="am-icon-trash"></i> 删除
                                             </a>
                                         </div>

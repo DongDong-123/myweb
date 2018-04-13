@@ -18,14 +18,14 @@ class Users(models.Model):
 		return self.username
 
 
-class Type(models.Model):	
+class Types(models.Model):	
 	name = models.CharField(max_length=32)
 	pid = models.IntegerField(default=0)
 	path = models.CharField(max_length=255)
 	
 
 class Goods(models.Model):
-	typeid = models.ForeignKey(to='Type', to_field='id')
+	typeid = models.ForeignKey(to='Types', to_field='id')
 	goods = models.CharField(max_length=32)
 	company = models.CharField(max_length=50, null=True)
 	descr = models.TextField(null=True)
@@ -33,7 +33,6 @@ class Goods(models.Model):
 	picname = models.CharField(max_length=255, null=True)
 	state = models.IntegerField(default=1)
 	store = models.IntegerField(default=0)
-	num = models.IntegerField(default=0)
 	clicknum = models.IntegerField(default=0, null=True)
 	addtime = models.IntegerField()
 

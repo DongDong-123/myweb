@@ -1,45 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . models import Goods
+from . models import Users, Types
 import os
 from django.core.paginator import Paginator
-
-def Goodslist(request):
-
-	return render(request,'back/goods-list.html')
-
-def Goodsadd(request):
-
-	return render(request,'back/goodsadd.html')
-
-def Goodsinsert(request):
-	ob = Goods()
-	ob.goods = request.POST.get('goodsname')
-	ob.price = request.POST.get('price')
-	ob.store = request.POST.get('store')
-	ob.state = request.POST.get('state')
-	ob.num = request.POST.get('num')
-
-	return HttpResponse('goodsinsert')
-
-def Goodsedit(request):
-
-	return HttpResponse('goodsedit')
-
-def Goodsdel(request):
-
-	return HttpResponse('goodsdel')
-
-def Goodsupdate(request):
-
-	return HttpResponse('goodsupdate')
-
-
-
-
-
-
-
 
 # def Goodlist(request):
 # 	return render(request,'back/goods-list.html')
@@ -105,11 +68,8 @@ def Goodsupdate(request):
 # def goodsadd(request):
 # 	return render(request, 'back/goodsadd.html')
 
-# def orderlist(request):
-# 	return render(request, 'back/orderlist.html')
+def orderlist(request):
+	
+	return render(request, 'back/orderlist.html')
 
-
-# # def calendar(request):
-# 	# return render(request,'back/404.html')
-# 	return render(request,'back/calendar.html')
 

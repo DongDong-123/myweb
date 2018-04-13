@@ -94,8 +94,8 @@ def uupdate(request):
 	ob.save()
 	return HttpResponse("<script>alert('修改成功'),location.href='/ulist'</script>")
 
-	
 
+# 临时，待删
 def calendar(request):
 	# return render(request,'back/404.html')
 	return render(request,'back/calendar.html')
