@@ -15,7 +15,7 @@
                                 <div class="am-btn-toolbar">
                                     <div class="am-btn-group am-btn-group-xs">
                                         <button type="button" class="am-btn am-btn-default am-btn-success">
-                                        <span class="am-icon-plus"></span> 新增</button>
+                                        <span class="am-icon-plus"></span><a href="{% url 'goodsadd' %}" title="">新增</a> </button>
                                         <button type="button" class="am-btn am-btn-default am-btn-secondary">
                                         <span class="am-icon-save"></span> 保存</button>
                                         <button type="button" class="am-btn am-btn-default am-btn-warning">
@@ -40,22 +40,46 @@
                                 <thead>
                                     <tr>
                                         <th>商品缩略图</th>
-                                        <th>ID</th>
+                                        <th>分类</th>
                                         <th>名称</th>
                                         <th>价格</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
-                                    <tr>
-                                        <th>商品缩略图</th>
-                                        <th>ID</th>
-                                        <th>名称</th>
-                                        <th>价格</th>
-                                        <th>状态</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    
                                 </thead>
+                                 <tbody>
+                                {% for i in ginfo %}
+                                <tr class="gradeX">
+                                    <td class="am-text-middle">
+                                    <img src="{{ i.picname }}" width='80px' alt="">
+                                    </td>
+                                    <td class="am-text-middle">{{ i.typeid.name }}</td>
+                                    <td class="am-text-middle">{{ i.goods }}</td>
+                                    <td class="am-text-middle">{{ i.price }}</td>
+                                    <td class="am-text-middle">
+                                    {% if i.state == 1 %}
+                                        新品
+                                    {% elif i.state == 2 %}
+                                        在售   
+                                    {% else %}
+                                        已下架
+                                    {% endif %}
+                                   </td>
+                                    <td class="am-text-middle">
+                                        <div class="tpl-table-black-operation">
+                                            <a href="{% url 'goodsedit' %}"> 
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a href="{% url 'goodsdel' %}" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                   
+                                    <!-- more data -->
+                                </tbody>
                                 
                             </table>
                         </div>

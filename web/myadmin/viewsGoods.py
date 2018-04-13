@@ -1,26 +1,36 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . models import Goods
-import os
+from . models import Goods,Types
+import os, time
 from django.core.paginator import Paginator
 
 def Goodslist(request):
+	ob = Goods.objects.all()
+	context = {'ginfo':ob}
 
-	return render(request,'back/goods-list.html')
+	return render(request,'back/goods-list.html',context)
 
 def Goodsadd(request):
+	obs = Types.objects.all()
+	context = {'types':obs}
 
-	return render(request,'back/goodsadd.html')
+	return render(request,'back/goodsadd.html', context)
 
 def Goodsinsert(request):
-	ob = Goods()
-	ob.goods = request.POST.get('goodsname')
-	ob.price = request.POST.get('price')
-	ob.store = request.POST.get('store')
-	ob.state = request.POST.get('state')
-	ob.num = request.POST.get('num')
+	try:
+		ob = Goods()
+		ob.typeid = Types.objects.get(id = request.POST['pid'])
+		ob.goods = request.POST.get('goodsname')
+		ob.price = request.POST.get('price')
+		ob.store = request.POST.get('store')
+		ob.state = request.POST.get('state')
+		ob.picname = upload(request)
+		ob.save()
+		return HttpResponse('<script>alert("添加成功"); location.href="/goodslist"</script>')
+	except Exception as e:
+		print(Exception,e)
+		return HttpResponse('<script>alert("添加失败"); location.href="/goodslist"</script>')
 
-	return HttpResponse('goodsinsert')
 
 def Goodsedit(request):
 
@@ -35,6 +45,14 @@ def Goodsupdate(request):
 	return HttpResponse('goodsupdate')
 
 
+def upload(request):
+	myfile = request.FILES.get("img", None)
+	filename = str(time.time())+"."+myfile.name.split(".").pop()
+	up = open("./static/public/img/"+filename,"wb+")
+	for chunk in myfile.chunks():
+		up.write(chunk)
+	up.close()
+	return "/static/public/img/"+filename
 
 
 

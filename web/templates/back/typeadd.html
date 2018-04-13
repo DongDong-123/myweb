@@ -21,8 +21,8 @@
 
 <div class="am-u-md-9 am-u-md-offset-1">
     <form class="am-form am-form-horizontal" action="{% url 'typeinsert' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-        <div class="am-form-group">
+        {% csrf_token %}
+    <div class="am-form-group">
         <label for="user-phone" class="am-u-sm-2  am-form-label">
             所属分类
         </label>
@@ -35,7 +35,7 @@
             </select>
            
         </div>
-        </div>
+    </div>
     
         <div class="am-form-group">
         <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">分类名称

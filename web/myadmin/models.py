@@ -34,7 +34,7 @@ class Goods(models.Model):
 	state = models.IntegerField(default=1)
 	store = models.IntegerField(default=0)
 	clicknum = models.IntegerField(default=0, null=True)
-	addtime = models.IntegerField()
+	addtime = models.DateTimeField(auto_now_add=True)
 
 
 class Orders(models.Model):
