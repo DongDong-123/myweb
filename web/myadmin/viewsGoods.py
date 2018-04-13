@@ -32,17 +32,41 @@ def Goodsinsert(request):
 		return HttpResponse('<script>alert("添加失败"); location.href="/goodslist"</script>')
 
 
-def Goodsedit(request):
+def Goodsedit(request, gid):
+	obs = Types.objects.all()
+	ob = Goods.objects.get(id=gid)
+	context = {'editinfo':ob, 'types':obs}
 
-	return HttpResponse('goodsedit')
+	return render(request,'back/goodsedit.html', context)
 
-def Goodsdel(request):
+def Goodsdel(request, gid):
+	try:
+		ob = Goods.objects.get(id = gid)
+		ob.delete()
+		return HttpResponse('<script>alert("删除成功"); location.href="/goodslist"</script>')
+	except Exception as e:
+		print(Exception,e)
+		return HttpResponse('<script>alert("删除失败"); location.href="/goodslist"</script>')
 
 	return HttpResponse('goodsdel')
 
 def Goodsupdate(request):
-
-	return HttpResponse('goodsupdate')
+	try:
+		ob = Goods.objects.get(id=request.POST.get('id'))
+		ob.typeid = Types.objects.get(id = request.POST['pid'])
+		ob.goods = request.POST.get('goodsname')
+		ob.price = request.POST.get('price')
+		ob.store = request.POST.get('store')
+		ob.state = request.POST.get('state')
+		ob.picname = upload(request)
+		oldpic = "."+str(ob.picname)
+		print("old",oldpic)
+		os.remove(oldpic)
+		ob.save()
+		return HttpResponse('<script>alert("修改成功"); location.href="/goodslist"</script>')
+	except Exception as e:
+		print(Exception,e)
+		return HttpResponse('<script>alert("修改失败"); location.href="/goodslist"</script>')
 
 
 def upload(request):

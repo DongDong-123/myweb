@@ -67,10 +67,10 @@
                                    </td>
                                     <td class="am-text-middle">
                                         <div class="tpl-table-black-operation">
-                                            <a href="{% url 'goodsedit' %}"> 
+                                            <a href="{% url 'goodsedit' i.id %}"> 
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
-                                            <a href="{% url 'goodsdel' %}" class="tpl-table-black-operation-del">
+                                            <a href="{% url 'goodsdel' i.id %}" class="tpl-table-black-operation-del">
                                                 <i class="am-icon-trash"></i> 删除
                                             </a>
                                         </div>

@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^goodslist/', viewsGoods.Goodslist, name='goodslist'),
     url(r'^goodsadd/', viewsGoods.Goodsadd, name='goodsadd'),
     url(r'^goodsinsert/', viewsGoods.Goodsinsert, name='goodsinsert'),
-    url(r'^goodsedit/', viewsGoods.Goodsedit, name='goodsedit'),
+    url(r'^goodsedit/(?P<gid>[0-9]+)', viewsGoods.Goodsedit, name='goodsedit'),
     url(r'^goodsdel/(?P<gid>[0-9]+)', viewsGoods.Goodsdel, name='goodsdel'),
     url(r'^goodsupdate/', viewsGoods.Goodsupdate, name='goodsupdate'),
     # 订单管理
