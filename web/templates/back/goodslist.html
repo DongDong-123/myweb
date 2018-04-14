@@ -48,7 +48,7 @@
                                     </tr>
                                 </thead>
                                  <tbody>
-                                {% for i in ginfo %}
+                                {% for i in goods %}
                                 <tr class="gradeX">
                                     <td class="am-text-middle">
                                     <img src="{{ i.picname }}" width='80px' alt="">
@@ -83,10 +83,13 @@
                                 
                             </table>
                         </div>
+                       
                         <div class="am-u-lg-12 am-cf">
                             <div class="am-fr">
                                 <ul class="am-pagination tpl-pagination">
-                                    
+                                   
+                                    {% load pagetag %}
+                                    {% PageShow goods.paginator.num_pages request %}
                                 </ul>
                             </div>
                         </div>

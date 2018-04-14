@@ -5,7 +5,7 @@ import os
 from django.core.paginator import Paginator
 
 def Goodlist(request):
-	return render(request,'back/goods-list.html')
+	return render(request,'back/goodslist.html')
 
 def typeadd(request):
 	ob = Types.objects.all()
@@ -25,9 +25,9 @@ def typeinsert(request):
 			p = Types.objects.get(id=ob.pid)
 			ob.path = p.path + ob.pid + ','
 		ob.save()
-		return HttpResponse('<script>alert("添加成功");location.href="/typelist"</script>')
+		return HttpResponse('<script>alert("添加成功");location.href="/myadmin/typelist"</script>')
 	except:
-		return HttpResponse('<script>alert("添加失败");location.href="/typelist"</script>')
+		return HttpResponse('<script>alert("添加失败");location.href="/myadmin/typelist"</script>')
 
 
 def typelist(request):
@@ -40,30 +40,30 @@ def typelist(request):
 	context = {'typelist':ob}
 	return render(request, 'back/typelist.html', context)
 
+def typedel(request, tid):
+	try:
+		ob = Types.objects.get(id = tid)
+		ob.delete()
+		return HttpResponse('<script>alert("删除成功");location.href="/myadmin/typelist"</script>')
+	except:
+		return HttpResponse('<script>alert("删除失败");location.href="/myadmin/typelist"</script>')
+
 def typeedit(request, tid):
 	ob = Types.objects.get(id = tid)
 	obs = Types.objects.all()
 	context = {'tinfo':ob, 'types':obs}
 	return render(request,'back/typeedit.html', context)
 
-def typedel(request, tid):
-	try:
-		ob = Types.objects.get(id = tid)
-		ob.delete()
-		return HttpResponse('<script>alert("删除成功");location.href="/typelist"</script>')
-	except:
-		return HttpResponse('<script>alert("删除失败");location.href="/typelist"</script>')
-
 def typeupdate(request):
 	try:
 		ob = Types.objects.get(id = request.POST['ttid'])
-		print(ob.name)
-		print(request.POST['name'])
+		# print(ob.name)
+		# print(request.POST['name'])
 		ob.name = request.POST['name']
-		# ob.save()
-		return HttpResponse('<script>alert("修改成功");location.href="/typelist"</script>')
+		ob.save()
+		return HttpResponse('<script>alert("修改成功");location.href="/myadmin/typelist"</script>')
 	except:
-		return HttpResponse('<script>alert("修改失败");location.href="/typelist"</script>')
+		return HttpResponse('<script>alert("修改失败");location.href="/myadmin/typelist"</script>')
 
 def goodsadd(request):
 	return render(request, 'back/goodsadd.html')

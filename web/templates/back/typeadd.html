@@ -28,7 +28,7 @@
         </label>
         <div class="am-u-sm-10">
             <select name="pid" data-am-selected=" {searchBox: 1}" >
-                <option value="0">顶级分类</option>
+                <!-- <option value="0">顶级分类</option> -->
                 {% for v in types %}
                 <option value="{{ v.id }}">{{ v.name }}</option>
                 {% endfor %}

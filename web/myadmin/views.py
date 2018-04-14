@@ -6,31 +6,29 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def myadmin(request):
-	# return HttpResponse('myadmin')
-	return render(request,'back/index.html')
+	return render(request,'back/base.html')
 
 def uadd(request):
-	return render(request,'back/add.html')
+	return render(request,'back/useradd.html')
 
 def insert(request):
 	ob = Users()
-	print('ob',ob)
+	# print('ob',ob)
 	ob.username = request.POST.get('name')
 	ob.password = request.POST.get('password')
 	ob.email = request.POST.get('email')
 	ob.state = request.POST.get('state')
-	if request.FILES.get('img') is False:
+	if not request.FILES.get('img'):
 		ob.img =  'static/public/img/9110.jpg'
 	else:
 		ob.img =  request.FILES.get('img')
 
 	ob.save()
-	# return HttpResponse('insert')
-	return HttpResponse("<script>alert('添加成功'),location.href='/ulist'</script>")
+	return HttpResponse("<script>alert('添加成功'),location.href='/myadmin/ulist'</script>")
 
 def ulist(request):
-	# 获取数据
 	ob = Users.objects.all()
+	# 搜索
 	types = request.GET.get('type', None)
 	if types == 'username':
 		ob = Users.objects.filter(username__contains=request.GET.get('keywords', ''))
@@ -47,17 +45,12 @@ def ulist(request):
 			ob = Users.objects.filter().order_by('id')
 	else:
 		ob = Users.objects.filter().order_by('id')
-
-	# 实例化分页类
+	# 分页
 	paginator = Paginator(ob, 2)
-	# 获取当前页码
 	p = int(request.GET.get('p', 1))
-	# 获取分页数据对象
 	userlist = paginator.page(p)
-	# 分配数据
-	# content = {'users':ob}
 	content = {'users':userlist, 'p':p}
-	return render(request, 'back/user_list.html', content)
+	return render(request, 'back/userlist.html', content)
 
 def udel(request,uid):
 	ob = Users.objects.get(id=uid)
@@ -66,14 +59,13 @@ def udel(request,uid):
 	path_img = "./"+ str(del_img)
 	if str(del_img) !=  'static/public/img/9110.jpg':
 		os.remove(path_img)
-	return HttpResponse("<script>alert('删除成功'),location.href='/ulist'</script>")
+	return HttpResponse("<script>alert('删除成功'),location.href='/myadmin/ulist'</script>")
 
 def uedit(request, uid):
 	ob = Users.objects.get(id=uid)
 	content = {'oinfo':ob}
 	# print(content)
-	return render(request,'back/edit.html',content)
-
+	return render(request,'back/useredit.html',content)
 
 def uupdate(request):
 	ob = Users.objects.get(id=request.POST['id'])
@@ -84,7 +76,7 @@ def uupdate(request):
 	ob.email = request.POST['email']
 	ob.state = request.POST['state']
 	print('dd',request.FILES.get('img'))
-	if request.FILES.get('img') is None:
+	if not request.FILES.get('img'):
 		oc.img = str(edit_img)
 	else:
 		ob.img = request.FILES.get('img')
@@ -92,38 +84,61 @@ def uupdate(request):
 		if str(edit_img) != 'static/public/img/9110.jpg':
 			os.remove(path_img)
 	ob.save()
-	return HttpResponse("<script>alert('修改成功'),location.href='/ulist'</script>")
-
-
-# 临时，待删
-def calendar(request):
-	# return render(request,'back/404.html')
-	return render(request,'back/calendar.html')
-
-def chart(request):
-
-	return render(request,'back/chart.html')
-
-def form(request):
-
-	return render(request,'back/form.html')
+	return HttpResponse("<script>alert('修改成功'),location.href='/myadmin/ulist'</script>")
 
 def login(request):
-
 	return render(request,'back/login.html')
 
-def sign_up(request):
+def dologin(request):
+	if request.session['verifycode'] != request.POST.get('vcode'):
+		return HttpResponse('<script>alert("验证码错误");location.href="/myadmin/login"</script>')
+	try:
+		ob = Users.objects.get(username = request.POST['username'])
+		if ob.state == 0:
+			if ob.password == request.POST['password']:
+				request.session['AdminLoginS'] = {'uid':ob.id, 'username':ob.username,}
+				return HttpResponse('<script>alert("登录成功");location.href="/myadmin/ulist"</script>')
+			else:
+				raise
+		else:
+			raise
+	except:
+		pass
+	return HttpResponse("<script>alert('登录失败'),location.href='/myadmin/login'</script>")
 
-	return render(request,'back/sign-up.html')
+def logout(request):
+	request.session['AdminLoginS'] = {}
+	return HttpResponse("<script>alert('已退出登录'),location.href='/myadmin/login'</script>")
 
-def table_list_img(request):
-
-	return render(request,'back/table-list-img.html')
-
-def table_list(request):
-
-	return render(request,'back/table-list.html')
-
-def tables(request):
-
-	return render(request,'back/tables.html')
+def verifycode(request):
+    from PIL import Image, ImageDraw, ImageFont
+    import random
+    bgcolor = (random.randrange(20, 100), random.randrange(
+        20, 100), 255)
+    width = 100
+    height = 40
+    im = Image.new('RGB', (width, height), bgcolor)
+    draw = ImageDraw.Draw(im)
+    for i in range(0, 100):
+        xy = (random.randrange(0, width), random.randrange(0, height))
+        fill = (random.randrange(0, 255), 255, random.randrange(0, 255))
+        draw.point(xy, fill=fill)
+    # str1 = 'ABCD123EFGHIJK456LMNOPQRS789TUVWXYZ0'
+    # str1 = '你好啊我是管理员想登陆吗需要验证啊输入验证码吧哈'
+    str1 = '123456789'
+    rand_str = ''
+    for i in range(0, 4):
+        rand_str += str1[random.randrange(0, len(str1))]
+    font = ImageFont.truetype('NotoSansCJK-Light.ttc', 23)
+    # font = ImageFont.load_default().font
+    fontcolor = (255, random.randrange(0, 255), random.randrange(0, 255))
+    draw.text((5, 2), rand_str[0], font=font, fill=fontcolor)
+    draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)
+    draw.text((50, 2), rand_str[2], font=font, fill=fontcolor)
+    draw.text((75, 2), rand_str[3], font=font, fill=fontcolor)
+    del draw
+    request.session['verifycode'] = rand_str
+    import io
+    buf = io.BytesIO()
+    im.save(buf, 'png')
+    return HttpResponse(buf.getvalue(), 'image/png')
