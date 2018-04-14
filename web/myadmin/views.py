@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from . models import Users
 import os
+# 分页
 from django.core.paginator import Paginator
+# 密码加密
+from django.contrib.auth.hashers import make_password
+# 验证密码
+from django.contrib.auth.hashers import check_password
+
 
 # Create your views here.
 def myadmin(request):
@@ -15,7 +21,7 @@ def insert(request):
 	ob = Users()
 	# print('ob',ob)
 	ob.username = request.POST.get('name')
-	ob.password = request.POST.get('password')
+	ob.password = make_password(request.POST.get('password'), None, 'pbkdf2_sha256')
 	ob.email = request.POST.get('email')
 	ob.state = request.POST.get('state')
 	if not request.FILES.get('img'):
@@ -29,6 +35,7 @@ def insert(request):
 def ulist(request):
 	ob = Users.objects.all()
 	# 搜索
+	
 	types = request.GET.get('type', None)
 	if types == 'username':
 		ob = Users.objects.filter(username__contains=request.GET.get('keywords', ''))
@@ -72,7 +79,7 @@ def uupdate(request):
 	oc = Users()
 	edit_img = ob.img
 	ob.username = request.POST['name']
-	ob.password = request.POST['password']
+	ob.password = make_password(request.POST.get('password'), None, 'pbkdf2_sha256')
 	ob.email = request.POST['email']
 	ob.state = request.POST['state']
 	print('dd',request.FILES.get('img'))
@@ -95,7 +102,7 @@ def dologin(request):
 	try:
 		ob = Users.objects.get(username = request.POST['username'])
 		if ob.state == 0:
-			if ob.password == request.POST['password']:
+			if check_password(request.POST['password'],ob.password):
 				request.session['AdminLoginS'] = {'uid':ob.id, 'username':ob.username,}
 				return HttpResponse('<script>alert("登录成功");location.href="/myadmin/ulist"</script>')
 			else:

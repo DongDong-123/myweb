@@ -38,7 +38,11 @@ def Goodsinsert(request):
 def Goodsedit(request, gid):
 	obs = Types.objects.all()
 	ob = Goods.objects.get(id=gid)
+	oc = str(ob.typeid)
+	print('oc',oc)
 	context = {'editinfo':ob, 'types':obs}
+	# print("obs",obs.pid)
+	print("ob",ob.typeid)
 
 	return render(request,'back/goodsedit.html', context)
 
