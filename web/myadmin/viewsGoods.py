@@ -9,7 +9,24 @@ def Goodslist(request):
 	paginator = Paginator(ob, 3)
 	p = int(request.GET.get('p', 1))
 	goodslist = paginator.page(p)
-	context = {'goods':goodslist, 'p':p}
+
+	v = request.GET.get('keywords','')
+	arr = {
+	1:['新品','新','品'],
+	2:['热销','热','销'],
+    3:['下架','下','架']
+	}
+	state = 0
+	for k,x in arr.items():
+		if v in x:
+			state = k
+
+	from django.db.models import Q
+	obs = Goods.objects.filter(Q(id__contains=v)|Q(goods__contains=v)|Q(typeid__name__contains=v)|Q(price__contains=v)|Q(state__contains=state))
+
+	# context = {'search':ob}
+
+	context = {'goods':goodslist, 'p':p, 'search':obs}
 
 	return render(request,'back/goodslist.html',context)
 	

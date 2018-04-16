@@ -41,11 +41,12 @@ urlpatterns = [
     url(r'^myadmin/goodsdel/(?P<gid>[0-9]+)', viewsGoods.Goodsdel, name='goodsdel'),
     url(r'^myadmin/goodsupdate/', viewsGoods.Goodsupdate, name='goodsupdate'),
     # 订单管理
-    url(r'^myadmin/orderlist/', viewsOrder.orderlist, name='orderlist'),
-    # url(r'^myadmin/orderlist/', viewsOrder.orderlist, name='orderlist'),
-    # url(r'^myadmin/orderlist/', viewsOrder.orderlist, name='orderlist'),
-    # url(r'^myadmin/orderlist/', viewsOrder.orderlist, name='orderlist'),
-    # url(r'^myadmin/orderlist/', viewsOrder.orderlist, name='orderlist'),
+    url(r'^myadmin/orderlist/', viewsOrder.Orderlist, name='orderlist'),
+    url(r'^myadmin/orderadd/', viewsOrder.Orderadd, name='orderadd'),
+    url(r'^myadmin/orderinsert/', viewsOrder.Orderinsert, name='orderinsert'),
+    url(r'^myadmin/orderdel/', viewsOrder.Orderdel, name='orderdel'),
+    url(r'^myadmin/orderedit/', viewsOrder.Orderedit, name='orderedit'),
+    url(r'^myadmin/orderupdate/', viewsOrder.Orderupdate, name='orderupdate'),
     # 后台登录
     url(r'^myadmin/login', views.login, name='adminlogin'),
     url(r'^myadmin/dologin', views.dologin, name='admindologin'),
