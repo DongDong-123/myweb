@@ -26,19 +26,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-                            <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                                <input type="text" name="keywords" value="{{ request.GET.keywords }}" class="am-form-field ">
-                            	<span class="am-input-group-btn">
-									<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button">
-									</button>
-								</span>
+                        <form action="" method="">
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" name="keywords" value="{{ request.GET.keywords }}" class="   am-form-field ">
+                                	<span class="am-input-group-btn">
+						  			<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field  am-icon-search">
+						  			</button>
+						  		</span>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                         <div class="am-u-sm-12">
                             <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>商品缩略图</th>
                                         <th>分类</th>
                                         <th>名称</th>
@@ -47,9 +50,10 @@
                                         <th>操作</th>
                                     </tr>
                                 </thead>
-                                 <tbody>
                                 {% for i in goods %}
+                                <tbody>
                                 <tr class="gradeX">
+                                    <td class="am-text-middle">{{ i.id }}</td>
                                     <td class="am-text-middle">
                                     <img src="{{ i.picname }}" width='80px' alt="">
                                     </td>
@@ -64,7 +68,7 @@
                                     {% else %}
                                         已下架
                                     {% endif %}
-                                   </td>
+                                    </td>
                                     <td class="am-text-middle">
                                         <div class="tpl-table-black-operation">
                                             <a href="{% url 'goodsedit' i.id %}"> 
@@ -76,10 +80,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {% endfor %}
                                    
                                     <!-- more data -->
                                 </tbody>
+                                {% endfor %}
                                 
                             </table>
                         </div>

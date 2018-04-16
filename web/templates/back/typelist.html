@@ -27,14 +27,16 @@
                             </div>
                         </div>
                         <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                            <form action="" method="">
                             <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                                <input type="text" class="am-form-field ">
+                                <input type="text" name="keywords" value="{{ request.GET.keywords }}" class="am-form-field ">
 
                             	<span class="am-input-group-btn">
-									<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button">
+									<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search">
 									</button>
 								</span>
                             </div>
+                            </form>
                         </div>
                         <div class="am-u-sm-offset-1 am-u-sm-10">
                             <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
@@ -46,7 +48,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for i in typelist %}
+                                {% for i in typepage %}
                                 <tr class="gradeX">
                                     <td class="am-text-middle">{{ i.id }}</td>
                                     <!-- 占位 -->
@@ -72,7 +74,8 @@
                             <div class="am-fr">
                                 <ul class="am-pagination tpl-pagination">
                                     
-                                   
+                                    {% load pagetag %}
+                                    {% PageShow typepage.paginator.num_pages request %}
                                 </ul>
                             </div>
                         </div>

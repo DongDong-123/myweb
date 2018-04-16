@@ -22,6 +22,9 @@ class Types(models.Model):
 	name = models.CharField(max_length=32)
 	pid = models.IntegerField(default=0)
 	path = models.CharField(max_length=255)
+
+	def __str__(self):
+		return self.name
 	
 
 class Goods(models.Model):
@@ -36,6 +39,8 @@ class Goods(models.Model):
 	clicknum = models.IntegerField(default=0, null=True)
 	addtime = models.DateTimeField(auto_now_add=True)
 
+	def __str__(self):
+		return self.goods
 
 class Orders(models.Model):
 	uid = models.IntegerField()

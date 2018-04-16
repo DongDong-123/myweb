@@ -13,7 +13,6 @@ def typeadd(request):
 	return render(request, 'back/typeadd.html', context)
 
 def typeinsert(request):
-
 	try:
 		ob = Types()
 		ob.name = request.POST.get('name')
@@ -29,15 +28,8 @@ def typeinsert(request):
 	except:
 		return HttpResponse('<script>alert("添加失败");location.href="/myadmin/typelist"</script>')
 
-
 def typelist(request):
-	ob = Types.objects.extra(select = {'paths':'concat(path, id)'}).order_by('paths')
-	# print('ob',ob[0].name)
-	for x in ob:
-		n = len(x.path) - 2
-		x.name = (n*'|--') + x.name
-
-	context = {'typelist':ob}
+	context = {'typepage':Getpage(request)}
 	return render(request, 'back/typelist.html', context)
 
 def typedel(request, tid):
@@ -70,5 +62,20 @@ def goodsadd(request):
 
 def orderlist(request):
 	return render(request, 'back/orderlist.html')
+
+
+def Getpage(request):
+	v = request.GET.get('keywords','')
+	from django.db.models import Q
+	ob = Types.objects.filter(Q(id__contains=v)|Q(name__contains=v))
+
+	from django.core.paginator import Paginator
+	for x in ob:
+		n = len(x.path) - 2
+		x.name = (n*'|--') + x.name
+	paginator = Paginator(ob, 6)
+	p = int(request.GET.get('p', 1))
+	goodslist = paginator.page(p)
+	return goodslist
 
 

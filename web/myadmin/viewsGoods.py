@@ -2,19 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from . models import Goods,Types
 import os, time
-from django.core.paginator import Paginator
 
 def Goodslist(request):
-	ob = Goods.objects.all()
-	paginator = Paginator(ob, 3)
-	p = int(request.GET.get('p', 1))
-	goodslist = paginator.page(p)
+	
 
 	v = request.GET.get('keywords','')
 	arr = {
 	1:['新品','新','品'],
-	2:['热销','热','销'],
-    3:['下架','下','架']
+	2:['在售','在','售'],
+	3:['已下架','已','下','架'],
 	}
 	state = 0
 	for k,x in arr.items():
@@ -22,11 +18,15 @@ def Goodslist(request):
 			state = k
 
 	from django.db.models import Q
-	obs = Goods.objects.filter(Q(id__contains=v)|Q(goods__contains=v)|Q(typeid__name__contains=v)|Q(price__contains=v)|Q(state__contains=state))
+	ob = Goods.objects.filter(Q(id__contains=v)|Q(goods__contains=v)|Q(typeid__name__contains=v)|Q(price__contains=v)|Q(state__contains=state))
+	
+	from django.core.paginator import Paginator
+	paginator = Paginator(ob, 6)
+	p = int(request.GET.get('p', 1))
+	goodslist = paginator.page(p)
 
-	# context = {'search':ob}
 
-	context = {'goods':goodslist, 'p':p, 'search':obs}
+	context = {'goods':goodslist, 'p':p}
 
 	return render(request,'back/goodslist.html',context)
 	
@@ -55,11 +55,10 @@ def Goodsinsert(request):
 def Goodsedit(request, gid):
 	obs = Types.objects.all()
 	ob = Goods.objects.get(id=gid)
-	oc = str(ob.typeid)
+	oc = str(ob.typeid_id)
 	print('oc',oc)
 	context = {'editinfo':ob, 'types':obs}
-	# print("obs",obs.pid)
-	print("ob",ob.typeid)
+	print("ob",ob.typeid_id)
 
 	return render(request,'back/goodsedit.html', context)
 

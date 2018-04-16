@@ -23,5 +23,8 @@ urlpatterns = [
     url(r'^user/checkregedit', views.checkregedit, name='checkregedit'),
     url(r'^user/login', views.login, name='login'),
     # url(r'^user/checkname', views.checkname, name='checkname'),
-
+    # 商品列表
+    url(r'^user/goodslist', views.goodslist, name='list'),
+    url(r'^user/index', views.index, name='index'),
+    url(r'^user/goods', views.goods, name='goods'),
 ]

@@ -33,27 +33,24 @@ def insert(request):
 	return HttpResponse("<script>alert('添加成功'),location.href='/myadmin/ulist'</script>")
 
 def ulist(request):
-	ob = Users.objects.all()
 	# 搜索
 	
-	types = request.GET.get('type', None)
-	if types == 'username':
-		ob = Users.objects.filter(username__contains=request.GET.get('keywords', ''))
-	elif types == 'email':
-		ob = Users.objects.filter(email__contains=request.GET.get('keywords', ''))	
-	elif types == 'state':
-		if request.GET.get('keywords', '') == '会员':
-			ob = Users.objects.filter(state=1).order_by('id')
-		elif request.GET.get('keywords','') == '禁用':
-			ob = Users.objects.filter(state=2).order_by('id')
-		elif request.GET.get('keywords','') == '管理员':
-			ob = Users.objects.filter(state=0).order_by('id')
-		else:
-			ob = Users.objects.filter().order_by('id')
-	else:
-		ob = Users.objects.filter().order_by('id')
+	v = request.GET.get('keywords','')
+	arr = {
+	1:['会员','会','员'],
+	2:['禁用','禁','用'],
+	3:['管理员','管理','管','理'],
+	}
+	state = 0
+	for k,x in arr.items():
+		if v in x:
+			state = k
+
+	from django.db.models import Q
+	ob = Users.objects.filter(Q(id__contains=v)|Q(username__contains=v)|Q(email__contains=v)|Q(state__contains=state))
+	
 	# 分页
-	paginator = Paginator(ob, 2)
+	paginator = Paginator(ob, 4)
 	p = int(request.GET.get('p', 1))
 	userlist = paginator.page(p)
 	content = {'users':userlist, 'p':p}
