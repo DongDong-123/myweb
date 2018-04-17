@@ -153,6 +153,16 @@
         var reg = /^\w{4,12}$/;
         nameResult = reg.test(nam);
         if(nameResult){
+            // $.get({ url 'checkregedit' },{username:nam},function(data){
+//                 console.log(typeof(data));
+//                 console.log(data);
+//                 var D = eval(data);  
+//                 console.log(D);
+//                 console.log(typeof(D));  //当data为字符串时，此时D返回的是一个对象类型
+
+//                 $('div').html(data);  //把返回的文本写到页面内
+            // },); 
+
             $('.uname span').html('输入正确');
             $('.uname span').css('color','green');
         }else{
@@ -221,20 +231,20 @@
 
 
 
-// $('button').eq(0).click(function(){
+Names.onblur = function(){
             
-//             // $.get 1.请求地址 2.可选的携带的参数,参数的格式必须是对象类型,3.回调函数,ajax请求成功之后执行的函数
-//             // data 服务器返回的数据
-//             $.get('cgi-bin/1.py',{username:123,password:123},function(data){
-//                 console.log(typeof(data));
-//                 console.log(data);
-//                 var D = eval(data);  //如果data不是一个原生字符串（如'4'，'true',这种通过数据类型转换变成的字符串），使用eval函数，把data恢复到原本的数据类型(4 number类型,true boolean类型)；若打data本身就是字符串（如'hello',) 为什么返回的是一个对象？
-//                 console.log(D);
-//                 console.log(typeof(D));  //当data为字符串时，此时D返回的是一个对象类型
+            // $.get 1.请求地址 2.可选的携带的参数,参数的格式必须是对象类型,3.回调函数,ajax请求成功之后执行的函数
+            // data 服务器返回的数据
+            $.get('/home/urls.py',function(data){
+                console.log(typeof(data));
+                console.log(data);
+                var D = eval(data);  //如果data不是一个原生字符串（如'4'，'true',这种通过数据类型转换变成的字符串），使用eval函数，把data恢复到原本的数据类型(4 number类型,true boolean类型)；若打data本身就是字符串（如'hello',) 为什么返回的是一个对象？
+                console.log(D);
+                console.log(typeof(D));  //当data为字符串时，此时D返回的是一个对象类型
 
-//                 $('div').html(data);  //把返回的文本写到页面内
-//             },);    
-//         })
+                $('div').html(data);  //把返回的文本写到页面内
+            },);    
+        }
 </script>
 </body>
 </html>

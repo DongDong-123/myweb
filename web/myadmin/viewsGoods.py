@@ -40,10 +40,12 @@ def Goodsinsert(request):
 	try:
 		ob = Goods()
 		ob.typeid = Types.objects.get(id = request.POST['pid'])
+		print('ob.typeid',ob.typeid,type(ob.typeid))
 		ob.goods = request.POST.get('goodsname')
 		ob.price = request.POST.get('price')
 		ob.store = request.POST.get('store')
 		ob.state = request.POST.get('state')
+		ob.descr = request.POST.get('content')
 		ob.picname = upload(request)
 		ob.save()
 
@@ -51,16 +53,6 @@ def Goodsinsert(request):
 	except Exception as e:
 		print(Exception,e)
 		return HttpResponse('<script>alert("添加失败"); location.href="/myadmin/goodslist"</script>')
-
-def Goodsedit(request, gid):
-	obs = Types.objects.all()
-	ob = Goods.objects.get(id=gid)
-	oc = str(ob.typeid_id)
-	print('oc',oc)
-	context = {'editinfo':ob, 'types':obs}
-	print("ob",ob.typeid_id)
-
-	return render(request,'back/goodsedit.html', context)
 
 def Goodsdel(request, gid):
 	try:
@@ -76,6 +68,17 @@ def Goodsdel(request, gid):
 
 	return HttpResponse('goodsdel')
 
+def Goodsedit(request, gid):
+	obs = Types.objects.all()
+	ob = Goods.objects.get(id=gid)
+	oc = str(ob.typeid_id)
+	print('oc',oc)
+	context = {'editinfo':ob, 'types':obs}
+	print("ob",ob.typeid_id)
+
+	return render(request,'back/goodsedit.html', context)
+
+
 def Goodsupdate(request):
 	try:
 		ob = Goods.objects.get(id=request.POST.get('id'))
@@ -85,6 +88,7 @@ def Goodsupdate(request):
 		ob.price = request.POST.get('price')
 		ob.store = request.POST.get('store')
 		ob.state = request.POST.get('state')
+		ob.descr = request.POST.get('content')
 		ob.picname = upload(request)
 		oldpic = "."+str(pic)
 		if oldpic:

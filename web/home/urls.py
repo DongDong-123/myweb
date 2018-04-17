@@ -24,7 +24,14 @@ urlpatterns = [
     url(r'^user/login', views.login, name='login'),
     # url(r'^user/checkname', views.checkname, name='checkname'),
     # 商品列表
-    url(r'^user/goodslist', views.goodslist, name='list'),
-    url(r'^user/index', views.index, name='index'),
-    url(r'^user/goods', views.goods, name='goods'),
+    url(r'^user/goodslist/(?P<tid>[0-9]+)/(?P<tpid>[0-9]+)', views.goodslist, name='list'),
+    # url(r'^user/index', views.index, name='index'),
+    # 商品详情
+    url(r'^user/goods/(?P<tid>[0-9]+)', views.goods, name='goods'),
+    # 购物车
+    url(r'^user/cartindex/(?P<tid>[0-9]+)', views.cartindex, name='cartindex'),
+    url(r'^user/cartadd', views.cartadd, name='cartadd'),
+
+
+
 ]

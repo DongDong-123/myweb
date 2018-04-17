@@ -23,31 +23,22 @@
           <!-- Tab panes -->
           <div class="tab-content preview-booth pt10">
             <div role="tabpanel" class="tab-pane active mod-pic" id="list-p1">
-              <img src="/static/front/public/img/mlx15.jpg" width="375" height="375" class="sImg">
+              <img src="{{ goodsinfo.picname }}" width="375" height="375" class="sImg">
             </div>
             <div role="tabpanel" class="tab-pane mod-pic" id="list-p2">
-              <img src="/static/front/public/img/mlx2.jpg" width="375" height="375" class="sImg">
+              <img src="{{ goodsinfo.picname }}" width="375" height="375" class="sImg">
             </div>
             <div role="tabpanel" class="tab-pane mod-pic" id="list-p3">
-              <img src="/static/front/public/img/mlx3.jpg" width="375" height="375" class="sImg">
+              <img src="{{ goodsinfo.picname }}" width="375" height="375" class="sImg">
             </div>
           </div>
 
           <!-- Nav tabs -->
           <ul class="nav nav-tabs preview-thumb clearfix " role="tablist">
-            <li role="presentation" class="active">
-              <a href="#list-p1" aria-controls="list-p1" role="tab" data-toggle="tab">
-                <img src="/static/front/public/img/mlx4.jpg" style="display: inline;" width="75" height="75">
-              </a>
-            </li>
-            <li role="presentation">
-              <a href="#list-p2" aria-controls="list-p2" role="tab" data-toggle="tab">
-                <img src="/static/front/public/img/mlx5.jpg" style="display: inline;" width="75" height="75">
-              </a>
-            </li>
+           
             <li role="presentation">
               <a href="#list-p3" aria-controls="list-p3" role="tab" data-toggle="tab">
-                <img src="/static/front/public/img/mlx6.jpg" style="display: inline;" width="75" height="75">
+                <img src="{{ goodsinfo.picname }}" style="display: inline;" width="75" height="75">
               </a>
             </li>
           </ul>
@@ -57,7 +48,7 @@
       <div class="col-md-7 col-sm-12 col-xs-12 pt10">
         <div class="property hidden-xs hidden-sm" id="property">
              <div class="property-hd">
-                   <h1>魅蓝 X</h1>
+                   <h1>{{ goodsinfo.goods }}</h1>
                    <p class="mod-info active">32G直降200元 原价1699元 高清屏安全快充 </p>
              </div>
              <div class="property-sell">
@@ -67,7 +58,7 @@
                      <dd>
                          <div class="mod-price">
                              <small>¥</small>
-                             <span id="J_price" class="vm-money">1499.00</span>
+                             <span id="J_price" class="vm-money">{{ goodsinfo.price }}</span>
                          </div>
                          <div class="mod-original" id="J_originalPrice" style="display:none;"></div>
                          <div class="mod-activity">
@@ -177,24 +168,29 @@
                什么是花呗分期
             </a>
           </div>
-          <div class="property-buy">
-            <p class="vm-message" id="J_message"></p>
-            <dl class="property-buy-quantity">
-                <dt class="vm-metatit">数<span class="s-space"></span><span class="s-space"></span>量：</dt>
-                <dd class="clearfix">
-                    <div class="mod-control">
-                       <a title="减少" href="javascript:;" class="vm-minus disabled">-</a>
-                       <input value="1" id="J_quantity" data-max="5" type="text">
-                       <a title="增加" href="javascript:;" class="vm-plus">+</a>
-                    </div>
-                </dd>
-            </dl>
-            <div class="property-buy-action">
-                <a data-mtype="store_de_buy" href="javascript:void(0);" id="J_btnBuy" class="btn btn-danger btn-lg mr20">立即购买</a>
-                <a data-mtype="store_de_cart" href="javascript:void(0);" id="J_btnAddCart" class="btn btn-primary btn-lg " style="display:inline-block;"><i></i>加入购物车</a>
-                <span class="vm-service" id="J_panicBuyingWrap"></span>
+          <form action="{% url 'cartadd'%}" method="post">
+          {% csrf_token %}
+            <div class="property-buy">
+              <p class="vm-message" id="J_message "></p>
+              <dl class="property-buy-quantity">
+                  <dt class="vm-metatit">数<span class="s-space"></span><span class="s-space"></span>量：</dt>
+                  <dd class="clearfix">
+                      <div class="mod-control">
+                         <a title="减少" href="javascript:;" class="vm-minus disabled">-</a>
+                         <input value="1" name="numbs" id="J_quantity" data-max="5" type="text">
+                         <a title="增加" href="javascript:;" class="vm-plus">+</a>
+                      </div>
+                  </dd>
+              </dl>
+                <input type="hidden" name="pid" value="{{ goodsinfo.id }}">
+              <div class="property-buy-action">
+                  <a data-mtype="store_de_buy" href="javascript:void(0);" id="J_btnBuy" class="btn btn-danger     btn-lg mr20">立即购买</a>
+                  <a data-mtype="store_de_cart" href="" id="J_btnAddCart" class="btn btn-primary btn-lg " style="display:inline-block;"><i></i><button type="">加入购物车</button></a>
+
+                  <span class="vm-service" id="J_panicBuyingWrap"></span>
+              </div>
             </div>
-          </div>
+          </form>
           <div class="prod-addition">
                 <input id="servertime" value="1503304001935" type="hidden">
 
@@ -291,6 +287,7 @@
           </div>
         </div>
       </div>
+
   </div>
     <!-- 产品购买 -->
     </div>
@@ -344,23 +341,13 @@
         </div>
       </div>
       <div class="detail-content container">
-          <div class="introduce current" id="introduce">
+         <!--  <div class="introduce current" id="introduce">
               <img src="/static/front/public/img/mlx7.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx8.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx9.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx10.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx11.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx12.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx13.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/mlx14.jpg" class="pc-detial-intr">
-              <img src="/static/front/public/img/app/m5.jpg" class="app-detial-intr">
-              <img src="/static/front/public/img/app/m8.jpg" class="app-detial-intr">
-              <img src="/static/front/public/img/app/m9.jpg" class="app-detial-intr">
-              <img src="/static/front/public/img/app/m6.jpg" class="app-detial-intr">
-          </div>
+             
+          </div> -->
           <!-- 移动端图片 -->
 
-          <div class="standard" id="standard">
+         <!--  <div class="standard" id="standard">
               <table class="standard-table">
                   <tbody>
                       <tr class="standard-table-group">
@@ -519,8 +506,8 @@
                       </tr>                   
                   </tbody>
               </table>
-          </div>
-          <div class="question" id="question">
+          </div> -->
+          <!-- <div class="question" id="question">
             <div class="question-list hidden-xs hidden-sm">
                 <h2>热门回答</h2>
                     <dl class="mod-item">
@@ -670,10 +657,55 @@
                           </dd>
                       </dl>
               </div>
-          </div>
+          </div> -->
       </div>
     </div><!-- 产品详情 E-->
 
   </div>
+   <!-- 自己写的商品数量增减js -->
+          <script type="text/javascript">
+            // addMin()
+            // var num = document.getElementById('J_quantity');
+            //     // console.log(num);
+            // var nums = Number(num.value);
+            // $('.vm-plus').click(function(){
+            //     nums += 1
+            //     // console.log(nums)
+            //     num.value = nums
+            //     // console.log(num.value)
+            //     if(nums>1){
+            //       $('.vm-minus').removeClass('disabled')
+            //     };
+            // });
+            // $('.vm-minus').click(function(){
+            //     if(nums>0){
+            //       nums -= 1
+            //     }
+            //     // console.log(nums)
+            //     num.value = nums
+            //     // console.log(num.value)
+            //     if(nums<1){
+            //       $('.vm-minus').addClass('disabled')
+            //     }
+            // });
+            // $('#J_quantity').change(function(){
+            //   num = document.getElementById('J_quantity');
+            //   console.log('num2',num.value)
+            //   nums = Number(num.value);
+            //   if(nums<1){
+            //       nums=-nums
+            //        $('.vm-minus').addClass('disabled')
+            //     }else{
+            //       $('.vm-minus').removeClass('disabled')
+            //     };
+            // });
+          </script>
 
+{% endblock %}
+{% block 'add' %}
+<!-- 引用成品js -->
+<script type="text/javascript" src="/static/front/js/topNav.js"></script>
+    <script type="text/javascript">
+    addMin()
+ </script>
 {% endblock %}
