@@ -200,13 +200,22 @@ function cartAddMin(){
 
            //单个商品的小计
            spText= spText - npText;
-           $sumPrice.html(spText+'.00');
+           if(spText<=0){
+            spText = 0;
+            $sumPrice.html(spText+'.00');
+           console.log('单个小计1',spText)
+
+           }else{
+            $sumPrice.html(spText+'.00');
+           console.log('单个小计2',spText)
+           }
             
            
            //商品减少操作
-           if(num<=1){ 
+           if(num<1){ 
               $nSub.addClass('disabled');
               $nInput.val(1);
+              // return
            }else if(num>1){
               $nInput.val(num);
            }
@@ -226,7 +235,14 @@ function cartAddMin(){
 
            //算出新的总价格
            var nsfPrice=spText+sfPrice;
+           if(nsfPrice<=0){
+            nsfPrice = 0;
            $('#totalPrice').html(nsfPrice+'.00');
+           console.log('减少1',nsfPrice)
+           }else{
+           $('#totalPrice').html(nsfPrice+'.00');
+           console.log('减少2',nsfPrice)
+           }
 
       })
       //增加
@@ -274,6 +290,7 @@ function cartAddMin(){
            //单个商品的小计
            spText= spText + npText;
            $sumPrice.html(spText+'.00');
+           
            // console.log(num);
 
            //页面底部显示一共多少商品和选择的商品个数
@@ -291,7 +308,7 @@ function cartAddMin(){
            //算出新的总价格
            var nsfPrice=spText+sfPrice;
            $('#totalPrice').html(nsfPrice+'.00');
-           console.log(sfPrice)
+           console.log('nsfPrice',nsfPrice)
       })
 
       //叉号删除商品

@@ -19,8 +19,9 @@ urlpatterns = [
 
     url(r'^user/index', views.index, name='index'),
     # 注册登录
-    url(r'^user/regedit', views.regedit, name='regedit'),
+    url(r'^user/regedit$', views.regedit, name='regedit'),
     url(r'^user/checkregedit', views.checkregedit, name='checkregedit'),
+    url(r'^user/insertregedit', views.insertregedit, name='insertregedit'),
     url(r'^user/login', views.login, name='login'),
     # url(r'^user/checkname', views.checkname, name='checkname'),
     # 商品列表
@@ -29,8 +30,9 @@ urlpatterns = [
     # 商品详情
     url(r'^user/goods/(?P<tid>[0-9]+)', views.goods, name='goods'),
     # 购物车
-    url(r'^user/cartindex/(?P<tid>[0-9]+)', views.cartindex, name='cartindex'),
+    url(r'^user/cartindex', views.cartindex, name='cartindex'),
     url(r'^user/cartadd', views.cartadd, name='cartadd'),
+    url(r'^user/cartdel/(?P<tid>[0-9]+)', views.cartdel, name='cartdel'),
 
 
 

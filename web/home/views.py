@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from myadmin.models import Goods,Types,Users
+from myadmin.views import insert
 # Create your views here.
 def index(request):
 	return render(request, 'front/base.html')
@@ -8,19 +9,70 @@ def index(request):
 def regedit(request):
 	ob = Users.objects.all()
 	context = {'checkname':ob}
-	return render(request, 'front/regedit.html',context)
+	return render(request, 'front/register.html',context)
 
 def checkregedit(request):
-	if Users.objects.filter(username=data):
-
-		return HttpResponse('注册失败')
+	inputname = request.GET.get('Nam')
+	print('inputname',inputname)
+	if Users.objects.filter(username=inputname):
+		return HttpResponse('1')
 	else:
+		return HttpResponse('0')
 
-
-		return HttpResponse('注册验证')
+def insertregedit(request):
+	# insert()
+	ob = Users()
+	print('ob',ob)
+	ob.username = request.POST.get('name')
+	from django.contrib.auth.hashers import make_password
+	ob.password = make_password(request.POST.get('password'), None, 'pbkdf2_sha256')
+	aa = request.POST.get('password2')
+	ob.email = request.POST.get('email')
+	ob.state = request.POST.get('state')
+	if not request.FILES.get('img'):
+		ob.img =  'static/public/img/9110.jpg'
+	else:
+		ob.img =  request.FILES.get('img')
+	ob.save()
+	print("11222")
+	return HttpResponse("<script>alert('注册成功');location.href=‘/user/index'</script>")
+	# return HttpResponse('1122')
 
 def login(request):
-	return render(request, 'front/regedit.html')
+	if request.method == 'GET':
+		return render(request,'front/login.html')
+	else:
+		try:
+		# 接收用户名和密码,检测是否正确
+			ob = Users.objects.get(username=request.POST['username'])
+			# print('user',request.POST['username'])
+	
+			if ob.state != 2:
+				# 检测密码是否正确
+				from django.contrib.auth.hashers import check_password
+				# 验证密码
+				res = check_password(request.POST['password'],ob.password)
+				# print(res)
+				# print('password1',request.POST['password'])
+				# print('password2',ob.password)
+				# print('username',ob.username)
+				# print('id',ob.id)
+	
+			# 判断密码是否正确
+				if res:
+				# 登录成功,用户信息.,记录到session,跳转地址
+					print('res')
+					request.session['VipUser'] = {'uid':ob.id,'username':ob.username}
+					return HttpResponse('<script>alert("登录成功");location.href="/user/index"</script>')
+				else:
+					# 密码错误
+					raise
+
+		except:
+			pass
+	return HttpResponse('<script>alert("用户名或密码错误");location.href="login"</script>')
+	
+
 
 # def checkname(request):
 
@@ -105,28 +157,47 @@ def goods(request,tid):
 	return render(request,'front/goods.html',context)
 
 
-def cartindex(request,tid):
-	# ob = Goods.objects.get(id=tid)
-	# print(ob)
-	# context = {'cartinfo':ob}
+def cartindex(request):
+	
 	ob = Types.objects.all()
-	cart = request.session.get('cart')
-	context = {'cart':cart,'typelist':ob}
+	carts = request.session.get('cart',{})
+	# print('cart',carts,type(carts))
+	
+	context = {'cart':carts,'typelist':ob}
+
 	return render(request,'front/cart.html',context)
 
 
 def cartadd(request):
-	goodsnum = request.POST['numbs']
-	gid = int(request.POST.get('pid'))
-	print('goodsnum',goodsnum)
+	gid = request.POST.get('pid')
+	num = int(request.POST['numbs'])
+	print('goodsnum',num)
 	print('gid',gid,type(gid))
 	ob = Goods.objects.get(id=gid)
-	print(ob)
+	print('ob',ob)
 	print(ob.goods,ob.price,type(ob.goods))
-	request.session['cartnumbe']=goodsnum
-	request.session['cartname']=ob.goods
-	request.session['cartprice']=ob.price
+	
+	data = request.session.get('cart',{})
+	if gid in data.keys():
+		data[gid]['num']+=num
+	else:
+		arr = {'goods':ob.goods,'price':float(ob.price),'id':ob.id,'picname':ob.picname,'num':num}
+		data[gid]=arr
 
+	request.session['cart'] = data
+	print('data',data)
+	# data {
+	# '16': {'id': 16, 'num': '1', 'price': 2222.0, 'goods': '魅蓝 D4', 'picname': '/static/public/img/1523885717.8602414.jpg'},
+	# '6': {'id': 6, 'num': '1', 'price': 4299.0, 'goods': '魅蓝 Note5', 'picname': '/static/public/img/1523885109.1853251.jpg'},
+	# '14': {'id': 14, 'num': '344', 'price': 3222.0, 'goods': '魅蓝 X3', 'picname': '/static/public/img/1523885622.854606.jpg'},
+	# '19': {'id': 19, 'num': '1', 'price': 3355.0, 'goods': '魅蓝 A5', 'picname': '/static/public/img/1523885892.480298.jpg'},
+	# '17': {'id': 17, 'num': '11', 'price': 3333.0, 'goods': '魅蓝 A9', 'picname': '/static/public/img/1523885792.198914.jpg'}
+	# }
 
+	return HttpResponse('<script>location.href="cartindex"</script>')
 
-	return HttpResponse('<script>alert("添加成功")</script>')
+def cartdel(request,tid):
+	delcart = request.session.get('cart',{})
+	del cart[tid]
+	request.session['cart'] = delcart
+
