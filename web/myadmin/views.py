@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from . models import Users
 import os
+from django.conf import settings
 # 分页
 from django.core.paginator import Paginator
 # 密码加密
@@ -25,11 +26,13 @@ def insert(request):
 	ob.email = request.POST.get('email')
 	ob.state = request.POST.get('state')
 	if not request.FILES.get('img'):
-		ob.img =  'static/public/img/9110.jpg'
+		ob.img =  settings.BASE_DIR+'static/public/img/9110.jpg'
 	else:
-		ob.img =  request.FILES.get('img')
+		ob.img = request.FILES.get('img')
+
 
 	ob.save()
+
 	return HttpResponse("<script>alert('添加成功'),location.href='/myadmin/ulist'</script>")
 
 def ulist(request):
@@ -62,7 +65,7 @@ def udel(request,uid):
 	ob.delete()
 	path_img = "./"+ str(del_img)
 	if str(del_img) !=  'static/public/img/9110.jpg':
-		os.remove(path_img)
+		os.remove(settings.BASE_DIR+path_img)
 	return HttpResponse("<script>alert('删除成功'),location.href='/myadmin/ulist'</script>")
 
 def uedit(request, uid):
@@ -86,7 +89,7 @@ def uupdate(request):
 		ob.img = request.FILES.get('img')
 		path_img = "./" + str(edit_img)
 		if str(edit_img) != 'static/public/img/9110.jpg':
-			os.remove(path_img)
+			os.remove(settings.BASE_DIR+path_img)
 	ob.save()
 	return HttpResponse("<script>alert('修改成功'),location.href='/myadmin/ulist'</script>")
 

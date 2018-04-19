@@ -31,6 +31,18 @@
 	
 	<script type="text/javascript" src="/static/front/js/rem.js"></script>
 	<script type="text/javascript" src="/static/front/js/topNav.js"></script>
+
+	<style type="text/css" media="screen">
+		.payinfo{
+			margin-top: 10px;
+		}
+		.payinfo input{
+			margin-top: 10px;
+			width: 500px;
+			height: 40px;
+
+		}
+	</style>
 </head>
   
 <body class="cart-app">
@@ -46,36 +58,16 @@
 					</div>
 					<div class="navbar-left">
 						<ol class="breadcrumb">
-							<li class="active" style="color:blue;">购物车</li>
+							<li>购物车</li>
 							<li>确认订单</li>
-							<li>在线支付</li>
+							<li class="active" style="color:blue;">在线支付</li>
 							<li>完成 </li>
 						</ol>
 					</div>
 				</div>
 			</div>
 		</nav>
-		<!-- 移动端结构 -->
-		<!-- <div class="scroll-view">
-			<header id="header" class="header">
-				<div class="logo">
-					<a href="./index.html">
-					  <img src="/static/front/public/img/app/mlogo1.jpg">
-					</a>
-				</div>
-				<div class="qtool">
-					<a id="btn-search">
-					  <i class="glyphicon  glyphicon-search"></i>
-					</a>
-					<a href="#">
-					  <i class="glyphicon  glyphicon-shopping-cart"></i>
-					</a>
-					<a id="user-name" href="#">
-					  <i class="glyphicon glyphicon-user"></i>
-					</a>
-				</div>
-			</header>
-		</div> -->
+
     </div>
     <!-- 导航 E-->
     <!-- 主内容区域 -->
@@ -85,17 +77,11 @@
 			<table class="cart-header">
 				<tbody>
 					<tr>
-						<td class="cart-col-select col-md-3 col-xs-3 col-sm-3">
-							<div class="cart-select-all JSelectAll">
-								<div class="mz-checkbox"></div>
-								<span class="cart-select-title">全选</span>
-							</div>
-						</td>
-						<td class="cart-col-name col-md-3 hidden-xs hidden-sm">商品</td>
+						<td class="cart-col-name col-md-3 hidden-xs hidden-sm" style="padding-left:80px; " >图片</td>
+						<td class="cart-col-name col-md-3 hidden-xs hidden-sm">型号</td>
 						<td class="cart-col-price col-md-2 hidden-xs hidden-sm">单价(元)</td>
 						<td class="cart-col-number col-md-2 hidden-xs hidden-sm">数量</td>
 						<td class="cart-col-total col-md-1 hidden-xs hidden-sm">小计(元)</td>
-						<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">操作</td>
 					</tr>
 				</tbody>
 			</table><!-- 购物车详情头 E-->
@@ -108,7 +94,6 @@
 						{% for v in cart.values %}
 							<tr class="cart-product" id="pro5">
 								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
-									<div class="mz-checkbox "></div> 
 									<a href="meilanx.html" class="cart-product-link" target="_blank">
 										<img src="{{ v.picname }}" class="cart-product-img" alt="魅蓝 X">
 									</a>
@@ -118,21 +103,6 @@
 									  <p>{{ v.goods }}</p>
 									  <span class="cart-product-desc">全网通公开版 流光金 32GB</span>
 									</a>
-									<!-- 隐藏的？ -->
-									<!-- <p class="">
-										<span class="cart-product-price">{{ v.price }}</span>
-									</p>
-									<div class="cart-col-number">
-										<div class="cart-product-number-adder">
-											<p class="cart-product-number-max show"></p>
-											<div class="mz-adder">
-												<button class="mz-adder-subtract disabled"></button>
-												<div class="mz-adder-num">
-												<input gid="{{ v.id }}" class="mz-adder-input" value="{{ v.num }}" type="text"></div>
-												<button class="mz-adder-add"></button>
-											</div>
-										</div>
-									</div> -->
 								</td>
 								{% load pagetag %}
 								<td class="cart-col-price col-md-2 hidden-xs hidden-sm">
@@ -143,52 +113,17 @@
 								<td class="cart-col-number col-md-2 hidden-xs hidden-sm">
 									<div class="cart-product-number-adder">
 										<p class="cart-product-number-max show"></p>
-										<div class="mz-adder">
-											<!-- 减按钮 -->
-											<button class="mz-adder-subtract disabled"></button>
-											<div gid="{{ v.id }}" class="mz-adder-num">
-												<input class="mz-adder-input" id="nums" value="{{ v.num }}" type="text">
-											</div>
-											<!-- 加按钮 -->
-											<button class="mz-adder-add"></button>
+										<div>
+											<span>{{ v.num }}</span>
 										</div>
 									</div>
 								</td>
 								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
 									<span class="cart-product-price total" id="totals">{{ v.price }}</span>
 								</td>
-								<script type="text/javascript">
-								// var totals = document.getElementById('totals');
-								// var Totals = totals.value;
-								// var prices = document.getElementById('prices');
-								// var Prices = prices.value;
-								// var nums = document.getElementById('nums');
-								// var Nums = nums.value;
-								// $('.mz-adder input').change(function(){
-
-								// 	// Totals = Prices * Nmus
-									
-								// })
-
-								</script>
-								<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">
-									<div class="cart-product-remove">
-										<span class="glyphicon glyphicon-remove" pid="{{ v.id }}"></span>
-									</div>
-								</td>
+								
 							</tr>
 							{% endfor %}
-							<script type="text/javascript">
-							// 删除购物车商品
-							$('.glyphicon-remove').click(function(){
-								pid = $('.glyphicon-remove').attr('pid')
-								console.log('pid',pid)
-								$.get("{% url 'cartdel' %}",{'Pid':pid},function(){
-									console.log('data')
-								})
-							});
-
-							</script>
 						</tbody>
 					</table>
 				</div>
@@ -197,29 +132,51 @@
 		<!-- 结算详情 -->
 		<div class="cart-footer" id="cartFooter">
 			<div class="container">
-			   <div class="cart-footer-left col-md-6 col-xs-4 col-sm-4">
-				   <div class="cart-select-all JSelectAll" data-mdesc="全选按钮" data-mtype="store_cart_all">
-						<div class="mz-checkbox"></div>
-						<span class="cart-select-title">全选</span>
-				   </div>
-				   <!-- <span class="cart-remove-selected" id="removeSelected">删除选中的商品</span> -->
+			   <div class="cart-footer-left col-md-5 col-xs-3 col-sm-3">
 				   <span class="cart-footer-count">
 						共
 						<span class="cart-footer-num" id="totalCount"></span>
 						件商品
 				   </span>
 				</div>
-				<div class="cart-footer-right col-md-5 col-md-offset-1 col-sm-offset-2 col-xs-8 col-sm-6">
-					<span class="cart-footer-sum">
-						<span class="cart-footer-text">已优惠</span>
-						<span class="cart-footer-num red" id="totalDiscount">0.00</span>
-						<span class="cart-footer-text">元， 合计(不含运费)：</span>
-						<span class="cart-footer-total" id="totalPrice"></span>
-					</span>
-					<div class="mz-btn success" id="cartSubmit"><a href="{% url 'confimorder' %}">去结算</a></div>
-				</div>
+				
 			</div>
 		</div><!-- 结算详情 E-->
+		<br>
+		<div class="cart-footer" id="cartFooter" style="height: 300px;">
+			<div class="container">
+			   <div class="cart-footer-left col-md-8 col-md-offset-2 col-xs-3 col-sm-3">
+					<div class="payinfo">
+					    收 &nbsp;货&nbsp;人：&nbsp;<span></span><br>
+					    联系电话：<span></span><br>
+					    收货地址：<span></span><br>
+					    邮编：<span></span><br>
+					</div>
+				</div>
+			</div>
+		</div><br>
+
+		<div class="cart-footer" >
+			<div class="container">
+		<div class="cart-footer-right col-md-12 " style="background: #fff; text-align: right;">
+			<span class="cart-footer-sum">
+				<span class="cart-footer-text">已优惠</span>
+				<span class="cart-footer-num red" id="totalDiscount">0.00</span>
+				<span class="cart-footer-text">元， 合计(不含运费)：</span>
+				<span class="cart-footer-total" id="totalPrice"></span>
+			</span>
+			<div class="mz-btn success" id="cartSubmit">
+				<a href="{% url 'payonline' %}" style="color:white;">付款</a>
+			</div>
+			<div class="mz-btn success">
+				<a href="{% url 'cartindex' %}" style="color:white;">返回购物车</a>
+			</div>
+		</div>
+		</div>
+		</div>
+
+
+
 	</div>
     <!-- 主内容区域 E-->
 	

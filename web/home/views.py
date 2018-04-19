@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from myadmin.models import Goods,Types,Users
+from myadmin.models import Goods,Types,Users,Orders
 from myadmin.views import insert
-# Create your views here.
+from django.conf import settings
+
+
 def index(request):
 	return render(request, 'front/base.html')
 
@@ -20,7 +22,6 @@ def checkregedit(request):
 		return HttpResponse('0')
 
 def insertregedit(request):
-	# insert()
 	ob = Users()
 	print('ob',ob)
 	ob.username = request.POST.get('name')
@@ -32,11 +33,10 @@ def insertregedit(request):
 	if not request.FILES.get('img'):
 		ob.img =  'static/public/img/9110.jpg'
 	else:
-		ob.img =  request.FILES.get('img')
+		ob.img = request.FILES.get('img')
+
 	ob.save()
-	print("11222")
 	return HttpResponse("<script>alert('注册成功');location.href=‘/user/index'</script>")
-	# return HttpResponse('1122')
 
 def login(request):
 	if request.method == 'GET':
@@ -67,14 +67,9 @@ def login(request):
 				else:
 					# 密码错误
 					raise
-
 		except:
 			pass
 	return HttpResponse('<script>alert("用户名或密码错误");location.href="login"</script>')
-	
-
-
-# def checkname(request):
 
 def index(request):
 	t = Types.objects.filter(pid=0)
@@ -85,98 +80,36 @@ def index(request):
 			x.sub = Goods.objects.filter(typeid_id = x.id)
 		arr.append(v)
 
-	# print(arr)
 	data = Types.objects.all()
-	# for v in data:
-	# 	print('v',v)
-	# 	print('v.pid',v.pid)
-	# print(data)
-
-	# for i in arr:
-	# 	print('arr',i,type(i))
-	# 	print('arr.name',i.name,type(i.name))
-	# 	print('arr.id',i.id,type(i.id))
-	# 	for ii in i.sub:
-	# 		print('ii',ii)
-	# 		print('ii.id',ii.id)
-
 	glist_ob = Goods.objects.all()
-	# print(glist_ob)
 	context = {'typelist':data,'typegood':arr,'glist':glist_ob}
-
 
 	return render(request,'front/index.html',context)
 
 def goodslist(request,tid, tpid):
 	t = Types.objects.filter(pid=0)
-	# arr = []
-	# for v in t:
-	# 	v.sub = Types.objects.filter(pid = v.id)
-	# 	for x in v.sub:
-	# 		x.sub = Goods.objects.filter(typeid_id = x.id)
-	# 	arr.append(v)
-
-	# data = Goods.objects.filter(state=2)
 	if tpid == '0':
 		attr = []
 		top = Types.objects.filter(pid=tid)
-		# top = Types.objects.exclude(pid=0)
-		# print('top0',top)
-		# print('top0',top[0].pid,type(top[0]))
-		for i in top:
-		# 	print(i.pid,i.id)
-		# 	return i.id
-			attr.append(i.id)
-		print('attr',attr)
-		# print('i.id',i.id)
 		data = Goods.objects.filter(typeid_id=top[0].id)
-		# data = Goods.objects.all()
-		print('data1',data)
-		for i in data:
-			print('state1',i.state)
-			print('goods1',i.goods)
 	else:
 		data = Goods.objects.filter(typeid_id=tid)
-		print('data2',data)
-		for i in data:
-			print('state2',i.state)
-			print('goods2',i.goods)
 
 	context = {'typelist':t,'goodslist':data}
-
-
 	return render(request,'front/goodslist.html',context)
 
+# 商品详情
 def goods(request,tid):
 	ob = Goods.objects.get(id=tid)
-	print("ob",ob,type(ob))
-	print(ob.id,ob.goods)
+	context = {"goodsinfo":ob}
 
-	context = {"goodsinfo":ob} 
-	
 	return render(request,'front/goods.html',context)
 
-
-def cartindex(request):
-	
-	ob = Types.objects.all()
-	carts = request.session.get('cart',{})
-	# print('cart',carts,type(carts))
-	
-	context = {'cart':carts,'typelist':ob}
-
-	return render(request,'front/cart.html',context)
-
-
+# 添加购物车
 def cartadd(request):
 	gid = request.POST.get('pid')
 	num = int(request.POST['numbs'])
-	print('goodsnum',num)
-	print('gid',gid,type(gid))
 	ob = Goods.objects.get(id=gid)
-	print('ob',ob)
-	print(ob.goods,ob.price,type(ob.goods))
-	
 	data = request.session.get('cart',{})
 	if gid in data.keys():
 		data[gid]['num']+=num
@@ -185,19 +118,43 @@ def cartadd(request):
 		data[gid]=arr
 
 	request.session['cart'] = data
-	print('data',data)
-	# data {
-	# '16': {'id': 16, 'num': '1', 'price': 2222.0, 'goods': '魅蓝 D4', 'picname': '/static/public/img/1523885717.8602414.jpg'},
-	# '6': {'id': 6, 'num': '1', 'price': 4299.0, 'goods': '魅蓝 Note5', 'picname': '/static/public/img/1523885109.1853251.jpg'},
-	# '14': {'id': 14, 'num': '344', 'price': 3222.0, 'goods': '魅蓝 X3', 'picname': '/static/public/img/1523885622.854606.jpg'},
-	# '19': {'id': 19, 'num': '1', 'price': 3355.0, 'goods': '魅蓝 A5', 'picname': '/static/public/img/1523885892.480298.jpg'},
-	# '17': {'id': 17, 'num': '11', 'price': 3333.0, 'goods': '魅蓝 A9', 'picname': '/static/public/img/1523885792.198914.jpg'}
-	# }
-
 	return HttpResponse('<script>location.href="cartindex"</script>')
 
-def cartdel(request,tid):
+# 购物车列表
+def cartindex(request):
+	ob = Types.objects.all()
+	carts = request.session.get('cart',{})
+	context = {'cart':carts,'typelist':ob}
+	return render(request,'front/cart.html',context)
+
+# 删除购物车商品
+def cartdel(request):
+	pid = request.GET.get('Pid')
 	delcart = request.session.get('cart',{})
-	del cart[tid]
+	del delcart[pid]
 	request.session['cart'] = delcart
+	return HttpResponse('<script>location.href="/"</script>')
+# 确认订单
+def confimorder(request):
+	ob = Types.objects.all()
+	carts = request.session.get('cart',{})
+	context = {'cart':carts,'typelist':ob}
+
+	return render(request,'front/confimorder.html', context)
+
+# 提交订单
+def payonline(request):
+	oinfo = Orders()
+	oinfo.uid = Users.objects.get(id=request.session['VipUser']['uid'])
+	oinfo.linkman = request.POST.get('linkman')
+	oinfo.phone = request.POST.get('phone')
+	oinfo.address = request.POST.get('address')
+	oinfo.code = request.POST.get('code')
+	oinfo.save()
+
+	ob = Types.objects.all()
+	carts = request.session.get('cart',{})
+	context = {'cart':carts,'typelist':ob}
+
+	return render(request, 'front/payonline.html', context)
 
