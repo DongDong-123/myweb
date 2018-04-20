@@ -48,6 +48,7 @@
                     <table class="cart-merchant-body">
                         <tbody>
                             {% for v in cart.values %}
+                            <!-- 图片 -->
                             <tr class="cart-product" id="pro5">
                                 <td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
                                     <div class="mz-checkbox " gid="{{ v.id }}"></div> 
@@ -55,6 +56,7 @@
                                         <img src="{{ v.pic }}" class="cart-product-img" alt="{{ v.title }}">
                                     </a>
                                 </td>
+                            <!-- 标题 -->
                                 <td class="cart-col-name col-md-3 col-xs-8 col-sm-8">
                                     <a href="meilanx.html" class="cart-product-link" target="_blank">
                                       <p>{{ v.title }}</p>
@@ -62,11 +64,13 @@
                                    
                                     
                                 </td>
+                                <!-- 单价 -->
                                 <td class="cart-col-price col-md-2 hidden-xs hidden-sm">
                                     <p>
                                         <span class="cart-product-price">{{ v.price }}</span>
                                     </p>
                                 </td>
+                                <!-- 数量 -->
                                 <td class="cart-col-number col-md-2 hidden-xs hidden-sm">
                                     <div class="cart-product-number-adder">
                                         <p class="cart-product-number-max show"></p>
@@ -82,9 +86,11 @@
                                  
                                 </td>
                                 {% load adminpagetag %}
+                                <!-- 总价 -->
                                 <td class="cart-col-total col-md-1 hidden-xs hidden-sm">
                                     <span class="cart-product-price total">{% cheng v.price v.num %}</span>
                                 </td>
+                                <!-- 操作 -->
                                 <td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">
                                     <div class="cart-product-remove">
                                         <span class="glyphicon glyphicon-remove"></span>

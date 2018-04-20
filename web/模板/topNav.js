@@ -111,16 +111,16 @@
       }// 数量增加减少E
   /*---------------------------------------------------*/ 
   /*移动端特效-----------------------------------------*/
-  // function appTopNav(){
-  //   $(window).scroll(function(){
-  //     var dTop = $(document).scrollTop();
-  //     if(dTop>0){
-  //       $('#J_listFilter').addClass('fixed');
-  //     }else{
-  //       $('#J_listFilter').removeClass('fixed');
-  //     }
-  //   })
-  // }
+  function appTopNav(){
+    $(window).scroll(function(){
+      var dTop = $(document).scrollTop();
+      if(dTop>0){
+        $('#J_listFilter').addClass('fixed');
+      }else{
+        $('#J_listFilter').removeClass('fixed');
+      }
+    })
+  }
   /*---------------------------------------------------*/ 
   
 
@@ -128,20 +128,18 @@
 
 //选择框操作
 function allSelect(){
- 
   var aee = false;
   var see = false;
-  
+  arr = []
   // 全选
   $('.JSelectAll .mz-checkbox').click(function(){
+
     if(aee==false){
       $(this).addClass('checked');
-      $('.JSelectAll div').addClass('checked');
       $('.cart-col-select .mz-checkbox').addClass('checked');
-
       aee = true;
-    }else{
-      $('.JSelectAll .mz-checkbox').removeClass('checked');
+    }else if(aee==true){
+      $(this).removeClass('checked');
       $('.cart-col-select .mz-checkbox').removeClass('checked');
       aee = false;
     }
@@ -149,16 +147,13 @@ function allSelect(){
 
   //单选
   $('.cart-col-select .mz-checkbox').click(function(){
-
-      $(this).toggleClass('checked');
-      // var judg = $('.cart-col-select div')hasClass('checked')
-      if($('.cart-col-select').prevAll('div').hasClass('checked')){
-         $('.JSelectAll div').addClass('checked');
-          // $('.cart-col-select .mz-checkbox').addClass('checked');
-      }else{
-      $('.JSelectAll div').removeClass('checked');
-
-      }
+    if(see==false){
+      $(this).addClass('checked');
+      see = true;
+    }else if(see==true){
+      $(this).removeClass('checked');
+      see = false;
+    }
   })
 }
 
@@ -170,6 +165,8 @@ function cartAddMin(){
       $('#totalCount').html(pList.length); 
       var fsnC = Number( $('#totalCount').text());
 
+
+
       //初始商品总和
       var i = 0;
       var fsPrice = 0;
@@ -179,8 +176,10 @@ function cartAddMin(){
         var sPrice=Number($('.cart-product').eq(i).find('.cart-product-price.total').text());
         var fsPrice = Number(fsPrice)+Number(sPrice);
         i++;
-        $('#totalPrice').html(fsPrice+'.00');
+        $('#totalPrice').html(fsPrice);
       }
+
+
 
       
       // 减少
@@ -194,40 +193,32 @@ function cartAddMin(){
            var $mText = $(this).parents('#'+prod).find('.cart-product-number-max');
            var $nSub = $(this).parents('#'+prod).find('.mz-adder-subtract');
            var $nInput = $(this).parents('#'+prod).find('.mz-adder-input');
-           // 商品数量
+           // 获取当前购买的商品数量
            var n=$nInput.val();
+           if(n<=1){
+            return
+           }
            var num=parseInt(n)-1;
 
            
 
-           //获取当前商品的单价
+           //获取当前商品的单价和小计
            var $nPrice = $(this).parents('#'+prod).find('.cart-col-price .cart-product-price');
            var npText = parseInt($nPrice.text());
-           // 获取当前商品的小计
            var $sumPrice = $(this).parents('#'+prod).find('.cart-col-total  .cart-product-price');
            var spText = parseInt($sumPrice.text());
 
            //单个商品的小计
            spText= spText - npText;
-           if(spText<=0){
-            spText = 0;
-            $sumPrice.html(spText+'.00');
-           console.log('单个小计1',spText)
-
-           }else{
-            $sumPrice.html(spText+'.00');
-           console.log('单个小计2',spText)
-           }
+           $sumPrice.html(spText+'.00');
             
            
            //商品减少操作
-           if(num<=0){ 
-              $nInput.val(0);
+           if(num<=1){ 
               $nSub.addClass('disabled');
-
-              // return
+              $nInput.val(1);
+              return;
            }else if(num>1){
-              $nSub.removeClass('disabled');
               $nInput.val(num);
            }
            if(num<5){
@@ -246,14 +237,7 @@ function cartAddMin(){
 
            //算出新的总价格
            var nsfPrice=spText+sfPrice;
-           if(nsfPrice<=0){
-            nsfPrice = 0;
            $('#totalPrice').html(nsfPrice+'.00');
-           console.log('减少1',nsfPrice)
-           }else{
-           $('#totalPrice').html(nsfPrice+'.00');
-           console.log('减少2',nsfPrice)
-           }
 
       })
       //增加
@@ -301,7 +285,6 @@ function cartAddMin(){
            //单个商品的小计
            spText= spText + npText;
            $sumPrice.html(spText+'.00');
-           
            // console.log(num);
 
            //页面底部显示一共多少商品和选择的商品个数
@@ -319,7 +302,7 @@ function cartAddMin(){
            //算出新的总价格
            var nsfPrice=spText+sfPrice;
            $('#totalPrice').html(nsfPrice+'.00');
-           console.log('nsfPrice',nsfPrice)
+           // console.log(sfPrice)
       })
 
       //叉号删除商品

@@ -55,38 +55,18 @@
 				</div>
 			</div>
 		</nav>
-		<!-- 移动端结构 -->
-		<!-- <div class="scroll-view">
-			<header id="header" class="header">
-				<div class="logo">
-					<a href="./index.html">
-					  <img src="/static/front/public/img/app/mlogo1.jpg">
-					</a>
-				</div>
-				<div class="qtool">
-					<a id="btn-search">
-					  <i class="glyphicon  glyphicon-search"></i>
-					</a>
-					<a href="#">
-					  <i class="glyphicon  glyphicon-shopping-cart"></i>
-					</a>
-					<a id="user-name" href="#">
-					  <i class="glyphicon glyphicon-user"></i>
-					</a>
-				</div>
-			</header>
-		</div> -->
+		
     </div>
     <!-- 导航 E-->
     <!-- 主内容区域 -->
-    <div class="mainbody cart">
+    <div class="mainbody cart" id="test">
 		<div class="container">
 			<!-- 购物车详情头 -->
 			<table class="cart-header">
 				<tbody>
 					<tr>
 						<td class="cart-col-select col-md-3 col-xs-3 col-sm-3">
-							<div class="cart-select-all JSelectAll">
+							<div class="cart-select-all JSelectAll" data-mdesc="全选按钮" data-mtype="store_cart_all">
 								<div class="mz-checkbox"></div>
 								<span class="cart-select-title">全选</span>
 							</div>
@@ -108,7 +88,7 @@
 						{% for v in cart.values %}
 							<tr class="cart-product" id="pro5">
 								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
-									<div class="mz-checkbox "></div> 
+									<div class="mz-checkbox mz-radio"></div> 
 									<a href="meilanx.html" class="cart-product-link" target="_blank">
 										<img src="{{ v.picname }}" class="cart-product-img" alt="魅蓝 X">
 									</a>
@@ -135,17 +115,19 @@
 									</div> -->
 								</td>
 								{% load pagetag %}
+								<!-- 单价 -->
 								<td class="cart-col-price col-md-2 hidden-xs hidden-sm">
 									<p>
 										<span class="cart-product-price" id="prices">{{ v.price }}</span>
 									</p>
 								</td>
+								<!-- 数量 -->
 								<td class="cart-col-number col-md-2 hidden-xs hidden-sm">
 									<div class="cart-product-number-adder">
 										<p class="cart-product-number-max show"></p>
 										<div class="mz-adder">
 											<!-- 减按钮 -->
-											<button class="mz-adder-subtract disabled"></button>
+											<button class="mz-adder-subtract"></button>
 											<div gid="{{ v.id }}" class="mz-adder-num">
 												<input class="mz-adder-input" id="nums" value="{{ v.num }}" type="text">
 											</div>
@@ -154,8 +136,9 @@
 										</div>
 									</div>
 								</td>
+								<!-- 单件合计 -->
 								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
-									<span class="cart-product-price total" id="totals">{{ v.price }}</span>
+									<span class="cart-product-price total" id="totals">{% cheng v.price v.num %}</span>
 								</td>
 								<script type="text/javascript">
 								// var totals = document.getElementById('totals');
@@ -171,6 +154,7 @@
 								// })
 
 								</script>
+								<!-- 操作 -->
 								<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">
 									<div class="cart-product-remove">
 										<span class="glyphicon glyphicon-remove" pid="{{ v.id }}"></span>
@@ -216,7 +200,11 @@
 						<span class="cart-footer-text">元， 合计(不含运费)：</span>
 						<span class="cart-footer-total" id="totalPrice"></span>
 					</span>
-					<div class="mz-btn success" id="cartSubmit"><a href="{% url 'confimorder' %}">去结算</a></div>
+					<div class="mz-btn success" id="cartSubmit">
+						<a href="{% url 'confimorder' %}" onclick="getGoodsId()">去结算</a></div>
+					<form>
+					<input type="hidden" name="idg" value="">
+					</form>
 				</div>
 			</div>
 		</div><!-- 结算详情 E-->
@@ -370,12 +358,30 @@
     </div>
     <!-- 返回顶部 E-->
 	<script type="text/javascript">
-            //回顶部
-      		backTop();
-      		//全选
-      		allSelect();
-      		//商品数量加减
-      		cartAddMin();
+        //回顶部
+  		backTop();
+  		//全选
+  		allSelect();
+  		//商品数量加减
+  		cartAddMin();
+  		$('.mz-adder button').click(function(){
+  			n = $(this).parent().find('input').val()
+  			if(n<=0){
+  				return;
+  			}
+  			g = $('.mz-adder-num').attr('gid')
+  			console.log('g',g)
+  			$.get("{% url 'cartedit' %}",{num:n,gid:g},function(data){
+  				console.log(data)
+  				var totalnum = 0
+  				$('.total').each(function(){
+  					totalnum += parseFloat($(this).html())
+  				})
+  				$('#totalPrice').html(totalnum)
+  			})
+  		})
+
+
 	</script>
 </body>
 

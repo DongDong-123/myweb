@@ -233,10 +233,6 @@ def ordercreate(request):
         totalprice += (cart[x]['price'] * cart[x]['num'])
         totalnum += cart[x]['num']
 
-
-
-
-
     # 先去添加订单信息
     od = Order()
     od.uid = Users.objects.get(id=request.session['VipUser']['uid'])
@@ -267,10 +263,6 @@ def ordercreate(request):
 
     # 把购物车信息重新存入session中
     request.session['cart'] = cart
-
-
-
-    
 
 
     # 跳转到付款页面

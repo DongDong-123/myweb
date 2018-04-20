@@ -30,11 +30,16 @@ urlpatterns = [
     # 购物车
     url(r'^user/cartindex', views.cartindex, name='cartindex'),
     url(r'^user/cartadd', views.cartadd, name='cartadd'),
+    url(r'^user/cartedit', views.cartedit, name='cartedit'),
+    url(r'^user/createorder', views.createorder, name='createorder'),
     # 购物车删除
     url(r'^user/cartdel', views.cartdel, name='cartdel'),
     # 确认订单
     url(r'^user/confimorder', views.confimorder, name='confimorder'),
     # 提交订单
+    url(r'^user/displayorder', views.displayorder, name='displayorder'),
+
+    # 付款
     url(r'^user/payonline', views.payonline, name='payonline'),
 
 

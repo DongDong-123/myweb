@@ -48,8 +48,9 @@ class Orders(models.Model):
 	address = models.CharField(max_length=255)
 	code = models.CharField(max_length=6)
 	phone = models.CharField(max_length=16)
-	addtime = models.IntegerField()
+	addtime = models.DateTimeField(auto_now_add=True)
 	total = models.DecimalField(max_digits=8, decimal_places=2)
+	nums = models.ImageField(default=1)
 	status = models.IntegerField(default=0)
 
 

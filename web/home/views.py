@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from myadmin.models import Goods,Types,Users,Orders
+from myadmin.models import Goods,Types,Users,Orders,Detail
 from myadmin.views import insert
 from django.conf import settings
+import time 
 
 
 def index(request):
@@ -124,8 +125,20 @@ def cartadd(request):
 def cartindex(request):
 	ob = Types.objects.all()
 	carts = request.session.get('cart',{})
+	print('carts',carts)
 	context = {'cart':carts,'typelist':ob}
 	return render(request,'front/cart.html',context)
+
+def cartedit(request):
+	gid = request.GET.get('gid',None)
+	num = request.GET.get('num',None)
+	print('num',num,type(num))
+	print('gid',gid,type(gid))
+
+	cart = request.session.get('cart',{})
+	cart[gid]['num'] = int(num)
+	request.session['cart'] = cart
+	return HttpResponse('0')
 
 # 删除购物车商品
 def cartdel(request):
@@ -138,19 +151,90 @@ def cartdel(request):
 def confimorder(request):
 	ob = Types.objects.all()
 	carts = request.session.get('cart',{})
+	print('carts',carts)
 	context = {'cart':carts,'typelist':ob}
 
 	return render(request,'front/confimorder.html', context)
 
+def createorder(request):
+	
+    od = Orders()
+    # 收货信息 
+    od.uid =  request.POST.get('pid')
+    print('od.uid',od.uid,type(od.uid))
+    od.linkman = request.POST.get('linkman')
+    print('od.linkman',od.linkman)
+    od.address = request.POST.get('address')
+    od.phone = request.POST.get('phone')
+    od.code = request.POST.get('code')
+    # 总价
+    od.total = request.POST.get('total')
+    print('od.totalprice',od.total)
+    od.nums = request.POST.get('totalCount')
+    
+    # 状态
+    od.status = 1
+
+    od.save()
+
+    # 再去添加订单详情信息
+    ob = Orders.objects.all()
+    print(ob)
+    # for x in ids:
+    #     info = OrderInfo()
+    #     info.orderid = od
+    #     info.gid = Goods.objects.get(id=x)
+    #     info.num = cart[x]['num']
+    #     info.price = cart[x]['price']
+    #     info.save()
+    #     # 购物车中对应的商品信息
+    #     del cart[x]
+
+    # 把购物车信息重新存入session中
+    # request.session['cart'] = cart
+
+
+    # 跳转到付款页面
+    return HttpResponse('<script>alert("下单成功");location.href="displayorder"</script>')
+
+def displayorder(request):
+    # 再去添加订单详情信息
+    ob = Orders.objects.all()
+    print(ob)
+    data = request.session.get('cart', {})
+    for v in data.values():
+        print(v.price)
+    for i in ob:
+        print(i)
+        info = Detail()
+        info.orderid = i.id
+        info.goodsid = i.uid
+        info.price = request.session.get(id=)
+        info.num = i.nums
+    # for x in ids:
+    #     info = OrderInfo()
+    #     info.orderid = od
+    #     info.gid = Goods.objects.get(id=x)
+    #     info.num = cart[x]['num']
+    #     info.price = cart[x]['price']
+    #     info.save()
+    #     # 购物车中对应的商品信息
+    #     del cart[x]
+
+    # 把购物车信息重新存入session中
+    # request.session['cart'] = cart
+
+    return HttpResponse('pay')
 # 提交订单
 def payonline(request):
-	oinfo = Orders()
+	# oinfo = Orders.objects.get(id)
 	oinfo.uid = Users.objects.get(id=request.session['VipUser']['uid'])
 	oinfo.linkman = request.POST.get('linkman')
 	oinfo.phone = request.POST.get('phone')
 	oinfo.address = request.POST.get('address')
 	oinfo.code = request.POST.get('code')
-	oinfo.save()
+	# oinfo.total = 
+	# oinfo.save()
 
 	ob = Types.objects.all()
 	carts = request.session.get('cart',{})
