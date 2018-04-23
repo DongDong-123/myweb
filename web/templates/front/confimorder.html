@@ -1,36 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" class="">
-  
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-	<title>购物车-我的购物车</title>
-	<meta name="description" content="购物车，我的购物车">
-	<meta name="Keywords" content="魅族手机官网商城、魅族官方在线商店、魅族在线商城、魅族官网在线商店、魅族商城、魅蓝商城">
-	<link href="/static/front/public/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-	<link href="/static/front/public/img/favicon.ico" rel="icon" type="image/x-icon">
-	<!-- Bootstrap -->
-	<link href="/static/front/css/bootstrap.min.css" rel="stylesheet">
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="/static/front/js/jquery-1.12.4.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/static/front/js/bootstrap.min.js"></script>
-	<!-- 兼任ie9以下 -->
-	<!--[if lt IE 9]>
-	  <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
-	  <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
-	<![endif]-->
-	<!-- 自定义 -->
-	<link rel="stylesheet" type="text/css" href="/static/front/css/global.css">
-	<link rel="stylesheet" type="text/css" href="/static/front/css/app.css">
-	
-	<link rel="stylesheet" type="text/css" href="/static/front/css/cart.css">
-	<link rel="stylesheet" type="text/css" href="/static/front/css/cart-app.css">
-	
-	<script type="text/javascript" src="/static/front/js/rem.js"></script>
-	<script type="text/javascript" src="/static/front/js/topNav.js"></script>
+{% extends 'front/cart.html' %}
+
+	{% block 'css' %}
 	<style type="text/css" media="screen">
 		.payinfo{
 			margin-top: 10px;
@@ -42,8 +12,9 @@
 
 		}
 	</style>
-</head>
-  
+	{% endblock %}
+
+  {% block 'cart' %}
 <body class="cart-app">
     <!-- 导航 -->
     <div class="layout-header" id="scroll-wrap">
@@ -63,6 +34,51 @@
 							<li>完成 </li>
 						</ol>
 					</div>
+					<ul class="nav navbar-nav navbar-right layout-header-service clearfix" id="fordel">
+                        <li class="layout-header-service-item" id="layoutHeaderUser">
+                            <a href="javascript:;">欢迎!
+                                <span id="welcome">{{request.session.VipUser.username}}</span>
+                            </a>
+                        </li>
+                        <li class="layout-header-service-item am-text-sm">
+                            <a href="{% url 'logout' %}">
+                                <span class="am-icon-sign-out" id="userlogout"></span> 退出
+                            </a>
+                        </li>
+                        <li class="layout-header-service-item">
+                            <a href="login.html" >登录</a>
+                        </li>
+                        <li class="layout-header-service-item">
+                            <a href="{% url 'regedit' %}" target="_blank"  data-mtype="wmz_public_grzx_register">注册</a>
+                        </li>
+
+
+                        <li class="layout-header-service-item" id="layoutHeaderUser">
+                            <a class="layout-header-service-link g-user" href="{% url 'personal' %}" title="个人中心">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </a>
+                            <div class="layout-user-downmenu">
+                                <ul class="layout-user-downmenu-list">
+                                    <li class="layout-user-downmenu-item">
+                                        <a href="#" class="layout-user-downmenu-link" data-mtype="wmz_public_grzx_myorder">我的订单</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                        <li class="layout-header-service-item layout-header-service-cart" id="layoutHeaderCart">
+                            <a class="layout-header-service-link" href="{% url 'cartindex' %}" data-mtype="wmz_public_yt_cart">
+                                <i class="glyphicon glyphicon-shopping-cart"></i>
+                                <span class="layout-header-service-cart-num">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right layout-header-nav clearfix">
+                        <li class="layout-header-nav-item">
+                            <a href="/user/index.html" class="layout-header-nav-link">魅族商城 </a>
+                            <p class="line-top hidden-xs"></p>
+                        </li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
@@ -89,7 +105,7 @@
 				<div class="cart-merchant">
 					<table class="cart-merchant-body">
 						<tbody>
-						{% for v in cart.values %}
+						{% for v in orders %}
 							<tr class="cart-product" id="pro5">
 								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
 									<a href="" class="cart-product-link" target="_blank">
@@ -145,15 +161,14 @@
 							<div class="payinfo">
 							<form  id="createorder" action="{% url 'createorder' %}" method="post">
 							{% csrf_token %}
-								{% for i in cart.values %}
-								<input type="hidden" name="pid" value="{{ i.id }}">
-								{% endfor %}
+								
+								<input type="hidden" name="ids" value="{{ ids|join:','  }}">
 							    收货人：<input style="margin-left: 15px;" type="text" name="linkman"><br>
 							    联系电话：<input type="text" name="phone"><br>
 							    收货地址：<input type="text" name="address"><br>
 							    邮编：<input style="margin-left: 30px;" type="text" name="code"><br>
-							    <input id="alltotal" type="hidden" name="total" value="">
-							    <input id="allnum" type="hidden" name="totalCount" value="">
+							   <!--  <input id="alltotal" type="hidden" name="total" value="">
+							    <input id="allnum" type="hidden" name="totalCount" value=""> -->
 							</form>    
 							</div>
 						</div>
@@ -176,154 +191,11 @@
 			</div>
 		</div><!-- 结算详情 E-->
 	</div>
+
     <!-- 主内容区域 E-->
-	
-    <!-- 底部区域 -->
-    <footer class="layout-footer  hidden-xs hidden-sm">
-		<div class="container">
-			<div class="layout-footer-top clearfix">
-				<ul class="layout-footer-services clearfix">
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-sd-video"></i>
-						</span>
-						<span class="layout-footer-services-text">顺丰包邮</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-flash"></i>
-						</span>
-						<span class="layout-footer-services-text">100+ 城市次日送达</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-repeat"></i>
-						</span>
-						<span class="layout-footer-services-text">7 天无理由退货</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-refresh"></i>
-						</span>
-						<span class="layout-footer-services-text">15 天换货保障</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-wrench"></i>
-						</span>
-						<span class="layout-footer-services-text">1 年免费保修</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-map-marker"></i>
-						</span>
-						<span class="layout-footer-services-text">2300+ 线下体验店</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-sort"></i>
-						</span>
-						<span class="layout-footer-services-text">远程支持服务</span></a>
-					</li>
-					<li class="layout-footer-services-item">
-					  <a href="#" class="layout-footer-services-link" target="_blank" data-mtype="wmz_public_foot_homerepair">
-						<span class="layout-footer-service-wrap">
-						  <i class="glyphicon glyphicon-home"></i>
-						</span>
-						<span class="layout-footer-services-text">上门快修</span></a>
-					</li>
-				</ul>
-			  <div class="layout-footer-contact">
-				<p class="layout-footer-contact-desc">24小时全国服务热线</p>
-				<a href="tel:400-788-3333" class="layout-footer-contact-tel">400-788-3333</a>
-				<p>
-					<a href="javascript:void(0);" class="layout-footer-contact-online">
-						<i class="layout-font layout-font-talk1"></i>
-						<span class="text">在线客服</span>
-					</a>
-				</p>
-			  </div>
-			</div>
-			<div class="layout-footer-bottom clearfix">
-			<ul class="layout-footer-interlock clearfix">
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">了解魅族</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">加入我们</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">联系我们</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">Flyme</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">魅族社区</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">天猫旗舰店</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">问题反馈</a></li>
-				<li class="layout-footer-interlock-item">
-					<a href="#" target="_blank" class="layout-footer-interlock-link">线上销售授权名单公示</a>
-				 </li>
-			</ul>
-			<div class="layout-footer-copyright clearfix">
-				<span class="layout-footer-copyright-left">
-					<a class="layout-footer-copyright-link copyright-text">&copy;2017 Meizu Telecom Equipment Co., Ltd. All rights reserved.</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="#" target="_blank">粤ICP备13003602号-2</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="#" target="_blank">合字B2-20170010</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="#" target="_blank">营业执照</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="3" target="_blank">法律声明</a>
-					<a class="layout-footer-copyright-link">粤公网安备 44049102496009 号</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="#" rel="nofollow" target="_blank">
-						<i class="layout-icon layout-icon-license"></i>
-					</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="#" rel="nofollow" target="_blank">
-						<i class="layout-icon layout-icon-wel"></i>
-					</a>
-					<a class="layout-footer-copyright-link" hidefocus="true" href="#" rel="nofollow" target="_blank">
-						<i class="layout-icon layout-icon-trust"></i>
-					</a>
-				</span>
-				<ul class="layout-footer-media clearfix">
-					<li class="layout-footer-media-item">
-						<a href="http://weibo.com/meizumobile" class="layout-footer-media-link">
-							<i class="layout-font layout-font-weibo"></i>
-						</a>
-					</li>
-					<li class="layout-footer-media-item">
-						<a href="javascript:void(0);" class="layout-footer-media-link wechat">
-							<i class="layout-font layout-font-wechat"></i>
-							<div class="layout-footer-media-wechat-qrcode">
-								<img class="layout-footer-media-wechat-img" src="" alt="微信二维码">
-							</div>
-						</a>
-					</li>
-					<li class="layout-footer-media-item">
-						<a href="#" class="layout-footer-media-link">
-							<i class="layout-font layout-font-qzone"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-    </footer>
-    <!-- 底部区域 E -->
-    <!-- 返回顶部 -->
-    <div class="layout-magnet layout-magnet-show">
-		<div class="layout-magnet-item layout-magnet-item-top">
-			<a href="javascript:void(0);" class="layout-magnet-link" data-mtype="wmz_public_cbxf_top">
-				<div class="layout-magnet-icon">
-					<i class="glyphicon glyphicon-menu-up"></i>
-				</div>
-			</a>
-		</div>
-    </div>
-    <!-- 返回顶部 E-->
+	{% endblock %}
+    
+    {% block 'js' %}
 	<script type="text/javascript">
 	var totalCount = 0;
 	$('.number').each(function(){
@@ -337,8 +209,8 @@
     var totalprice = 0
     $('.total').each(function(){
         totalprice += Number($(this).html())
-		console.log('totalprice',totalprice,typeof(totalprice))
-        $('#alltotal').val(Number(totalprice))
+		// console.log('totalprice',totalprice,typeof(totalprice))
+  //       $('#alltotal').val(Number(totalprice))
     })
     $('#totalPrice').html(totalprice)
 
@@ -350,6 +222,4 @@
     })
 
 	</script>
-</body>
-
-</html>
+	{% endblock %}

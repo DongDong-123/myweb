@@ -3,14 +3,14 @@ from django.http import HttpResponse
 from . models import Goods,Types
 import os, time
 
-def Goodslist(request):
-	
 
+# 商品列表
+def Goodslist(request):
 	v = request.GET.get('keywords','')
 	arr = {
 	1:['新品','新','品'],
 	2:['在售','在','售'],
-	3:['已下架','已','下','架'],
+	0:['已下架','已','下','架'],
 	}
 	state = 0
 	for k,x in arr.items():
@@ -29,13 +29,13 @@ def Goodslist(request):
 	context = {'goods':goodslist, 'p':p}
 
 	return render(request,'back/goodslist.html',context)
-	
+# 商品添加
 def Goodsadd(request):
 	obs = Types.objects.all()
 	context = {'types':obs}
 
 	return render(request,'back/goodsadd.html', context)
-
+# 商品插入
 def Goodsinsert(request):
 	try:
 		ob = Goods()
@@ -53,7 +53,7 @@ def Goodsinsert(request):
 	except Exception as e:
 		print(Exception,e)
 		return HttpResponse('<script>alert("添加失败"); location.href="/myadmin/goodslist"</script>')
-
+# 商品删除
 def Goodsdel(request, gid):
 	try:
 		ob = Goods.objects.get(id = gid)
@@ -67,7 +67,7 @@ def Goodsdel(request, gid):
 		return HttpResponse('<script>alert("删除失败"); location.href="/myadmin/goodslist"</script>')
 
 	return HttpResponse('goodsdel')
-
+# 商品编辑
 def Goodsedit(request, gid):
 	obs = Types.objects.all()
 	ob = Goods.objects.get(id=gid)
@@ -78,7 +78,7 @@ def Goodsedit(request, gid):
 
 	return render(request,'back/goodsedit.html', context)
 
-
+# 商品更新
 def Goodsupdate(request):
 	try:
 		ob = Goods.objects.get(id=request.POST.get('id'))
@@ -100,6 +100,7 @@ def Goodsupdate(request):
 		print(Exception,e)
 		return HttpResponse('<script>alert("修改失败"); location.href="/myadmin/goodslist"</script>')
 
+# 上传图片函数
 def upload(request):
 	myfile = request.FILES.get("img", None)
 	filename = str(time.time())+"."+myfile.name.split(".").pop()

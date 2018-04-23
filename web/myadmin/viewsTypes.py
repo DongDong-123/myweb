@@ -4,14 +4,13 @@ from . models import Types
 import os
 from django.core.paginator import Paginator
 
-def Goodlist(request):
-	return render(request,'back/goodslist.html')
 
+# 分类添加
 def typeadd(request):
 	ob = Types.objects.all()
 	context = {'types':ob}
 	return render(request, 'back/typeadd.html', context)
-
+# 分类插入
 def typeinsert(request):
 	try:
 		ob = Types()
@@ -27,11 +26,11 @@ def typeinsert(request):
 		return HttpResponse('<script>alert("添加成功");location.href="/myadmin/typelist"</script>')
 	except:
 		return HttpResponse('<script>alert("添加失败");location.href="/myadmin/typelist"</script>')
-
+# 分类列表
 def typelist(request):
 	context = {'typepage':Getpage(request)}
 	return render(request, 'back/typelist.html', context)
-
+# 分类删除
 def typedel(request, tid):
 	try:
 		ob = Types.objects.get(id = tid)
@@ -39,13 +38,13 @@ def typedel(request, tid):
 		return HttpResponse('<script>alert("删除成功");location.href="/myadmin/typelist"</script>')
 	except:
 		return HttpResponse('<script>alert("删除失败");location.href="/myadmin/typelist"</script>')
-
+# 分类编辑
 def typeedit(request, tid):
 	ob = Types.objects.get(id = tid)
 	obs = Types.objects.all()
 	context = {'tinfo':ob, 'types':obs}
 	return render(request,'back/typeedit.html', context)
-
+# 分类更新
 def typeupdate(request):
 	try:
 		ob = Types.objects.get(id = request.POST['ttid'])
@@ -56,14 +55,7 @@ def typeupdate(request):
 		return HttpResponse('<script>alert("修改成功");location.href="/myadmin/typelist"</script>')
 	except:
 		return HttpResponse('<script>alert("修改失败");location.href="/myadmin/typelist"</script>')
-
-def goodsadd(request):
-	return render(request, 'back/goodsadd.html')
-
-def orderlist(request):
-	return render(request, 'back/orderlist.html')
-
-
+# 分页搜索函数
 def Getpage(request):
 	v = request.GET.get('keywords','')
 	from django.db.models import Q

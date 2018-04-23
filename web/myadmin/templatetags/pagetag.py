@@ -2,15 +2,13 @@ from django import template
 register = template.Library()
 
 from django.utils.html import format_html
-@register.simple_tag
 
 @register.simple_tag
 def cheng(var1,var2):
     res = float(var1) * float(var2)
-
     return '%.2f'%res
-
     
+@register.simple_tag
 def PageShow(count,request):
     # 当前页码数,默认为1
     p = int(request.GET.get('p',1))

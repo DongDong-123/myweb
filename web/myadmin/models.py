@@ -43,20 +43,26 @@ class Goods(models.Model):
 		return self.goods
 
 class Orders(models.Model):
-	uid = models.IntegerField()
+	uid = models.ForeignKey('Users',to_field="id")
 	linkman = models.CharField(max_length=32)
 	address = models.CharField(max_length=255)
 	code = models.CharField(max_length=6)
 	phone = models.CharField(max_length=16)
 	addtime = models.DateTimeField(auto_now_add=True)
 	total = models.DecimalField(max_digits=8, decimal_places=2)
-	nums = models.ImageField(default=1)
+	nums = models.IntegerField(default=1)
 	status = models.IntegerField(default=0)
+
+	def __str__(self):
+		return self.linkman
 
 
 class Detail(models.Model):
 	orderid = models.OneToOneField(Orders)
-	goodsid = models.IntegerField()
+	goodsid = models.ForeignKey('Goods',to_field="id")
 	name = models.CharField(max_length=32)
 	price = models.DecimalField(max_digits=6, decimal_places=2)
 	num = models.IntegerField()
+
+	def __str__(self):
+		return self.name

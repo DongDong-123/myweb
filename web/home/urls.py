@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^user/checkregedit', views.checkregedit, name='checkregedit'),
     url(r'^user/insertregedit', views.insertregedit, name='insertregedit'),
     url(r'^user/login', views.login, name='login'),
+    # 退出
+    url(r'^user/logout', views.logout, name='logout'),
     # 商品列表
     url(r'^user/goodslist/(?P<tid>[0-9]+)/(?P<tpid>[0-9]+)', views.goodslist, name='list'),
     # 商品详情
@@ -37,10 +39,12 @@ urlpatterns = [
     # 确认订单
     url(r'^user/confimorder', views.confimorder, name='confimorder'),
     # 提交订单
-    url(r'^user/displayorder', views.displayorder, name='displayorder'),
-
+    url(r'^user/displayorder/(?P<oid>[0-9]+)', views.displayorder, name='displayorder'),
     # 付款
-    url(r'^user/payonline', views.payonline, name='payonline'),
-
-
+    url(r'^user/payonline/(?P<oid>[0-9]+)', views.payonline, name='payonline'),
+    # 个人中心
+    url(r'^user/personal', views.personal, name='personal'),
+    # 我的订单
+    url(r'^user/myorder', views.myorder, name='myorder'),
 ]
+

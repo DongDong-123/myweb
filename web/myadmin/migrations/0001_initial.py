@@ -14,16 +14,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Detail',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('goodsid', models.IntegerField()),
-                ('name', models.CharField(max_length=32)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=6)),
-                ('num', models.IntegerField()),
-            ],
-        ),
+        
         migrations.CreateModel(
             name='Goods',
             fields=[
@@ -39,20 +30,6 @@ class Migration(migrations.Migration):
                 ('num', models.IntegerField(default=0)),
                 ('clicknum', models.IntegerField(default=0)),
                 ('addtime', models.IntegerField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Orders',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uid', models.IntegerField()),
-                ('linkman', models.CharField(max_length=32)),
-                ('address', models.CharField(max_length=255)),
-                ('code', models.CharField(max_length=6)),
-                ('phone', models.CharField(max_length=16)),
-                ('addtime', models.IntegerField()),
-                ('total', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('status', models.IntegerField(default=0)),
             ],
         ),
         migrations.CreateModel(
@@ -80,10 +57,5 @@ class Migration(migrations.Migration):
                 ('img', models.ImageField(upload_to='static/public/img')),
                 ('addtime', models.DateField(auto_now_add=True)),
             ],
-        ),
-        migrations.AddField(
-            model_name='detail',
-            name='orderid',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='myadmin.Orders'),
         ),
     ]

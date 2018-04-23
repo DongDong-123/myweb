@@ -31,8 +31,11 @@
 	
 	<script type="text/javascript" src="/static/front/js/rem.js"></script>
 	<script type="text/javascript" src="/static/front/js/topNav.js"></script>
+	{% block 'css' %}
+
+	{% endblock %}
 </head>
-  
+  {% block 'cart' %}
 <body class="cart-app">
     <!-- 导航 -->
     <div class="layout-header" id="scroll-wrap">
@@ -52,10 +55,54 @@
 							<li>完成 </li>
 						</ol>
 					</div>
+					<ul class="nav navbar-nav navbar-right layout-header-service clearfix" id="fordel">
+                        <li class="layout-header-service-item" id="layoutHeaderUser">
+                            <a href="javascript:;">欢迎!
+                                <span id="welcome">{{request.session.VipUser.username}}</span>
+                            </a>
+                        </li>
+                        <li class="layout-header-service-item am-text-sm">
+                            <a href="{% url 'logout' %}">
+                                <span class="am-icon-sign-out" id="userlogout"></span> 退出
+                            </a>
+                        </li>
+                        <li class="layout-header-service-item">
+                            <a href="login.html" >登录</a>
+                        </li>
+                        <li class="layout-header-service-item">
+                            <a href="{% url 'regedit' %}" target="_blank"  data-mtype="wmz_public_grzx_register">注册</a>
+                        </li>
+
+
+                        <li class="layout-header-service-item" id="layoutHeaderUser">
+                            <a class="layout-header-service-link g-user" href="{% url 'personal' %}" title="个人中心">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </a>
+                            <div class="layout-user-downmenu">
+                                <ul class="layout-user-downmenu-list">
+                                    <li class="layout-user-downmenu-item">
+                                        <a href="#" class="layout-user-downmenu-link" data-mtype="wmz_public_grzx_myorder">我的订单</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                        <li class="layout-header-service-item layout-header-service-cart" id="layoutHeaderCart">
+                            <a class="layout-header-service-link" href="{% url 'cartindex' %}" data-mtype="wmz_public_yt_cart">
+                                <i class="glyphicon glyphicon-shopping-cart"></i>
+                                <span class="layout-header-service-cart-num">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right layout-header-nav clearfix">
+                        <li class="layout-header-nav-item">
+                            <a href="/user/index.html" class="layout-header-nav-link">魅族商城 </a>
+                            <p class="line-top hidden-xs"></p>
+                        </li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
-		
     </div>
     <!-- 导航 E-->
     <!-- 主内容区域 -->
@@ -88,8 +135,8 @@
 						{% for v in cart.values %}
 							<tr class="cart-product" id="pro5">
 								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
-									<div class="mz-checkbox mz-radio"></div> 
-									<a href="meilanx.html" class="cart-product-link" target="_blank">
+									<div gid="{{ v.id }}" class="mz-checkbox mz-radio"></div> 
+									<a href="" class="cart-product-link" target="_blank">
 										<img src="{{ v.picname }}" class="cart-product-img" alt="魅蓝 X">
 									</a>
 								</td>
@@ -98,7 +145,7 @@
 									  <p>{{ v.goods }}</p>
 									  <span class="cart-product-desc">全网通公开版 流光金 32GB</span>
 									</a>
-									<!-- 隐藏的？ -->
+									
 									<!-- <p class="">
 										<span class="cart-product-price">{{ v.price }}</span>
 									</p>
@@ -128,7 +175,7 @@
 										<div class="mz-adder">
 											<!-- 减按钮 -->
 											<button class="mz-adder-subtract"></button>
-											<div gid="{{ v.id }}" class="mz-adder-num">
+											<div class="mz-adder-num">
 												<input class="mz-adder-input" id="nums" value="{{ v.num }}" type="text">
 											</div>
 											<!-- 加按钮 -->
@@ -140,20 +187,6 @@
 								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
 									<span class="cart-product-price total" id="totals">{% cheng v.price v.num %}</span>
 								</td>
-								<script type="text/javascript">
-								// var totals = document.getElementById('totals');
-								// var Totals = totals.value;
-								// var prices = document.getElementById('prices');
-								// var Prices = prices.value;
-								// var nums = document.getElementById('nums');
-								// var Nums = nums.value;
-								// $('.mz-adder input').change(function(){
-
-								// 	// Totals = Prices * Nmus
-									
-								// })
-
-								</script>
 								<!-- 操作 -->
 								<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">
 									<div class="cart-product-remove">
@@ -162,17 +195,7 @@
 								</td>
 							</tr>
 							{% endfor %}
-							<script type="text/javascript">
-							// 删除购物车商品
-							$('.glyphicon-remove').click(function(){
-								pid = $('.glyphicon-remove').attr('pid')
-								console.log('pid',pid)
-								$.get("{% url 'cartdel' %}",{'Pid':pid},function(){
-									console.log('data')
-								})
-							});
-
-							</script>
+							
 						</tbody>
 					</table>
 				</div>
@@ -200,9 +223,9 @@
 						<span class="cart-footer-text">元， 合计(不含运费)：</span>
 						<span class="cart-footer-total" id="totalPrice"></span>
 					</span>
-					<div class="mz-btn success" id="cartSubmit">
-						<a href="{% url 'confimorder' %}" onclick="getGoodsId()">去结算</a></div>
-					<form>
+					<div class="mz-btn success" id="cartSubmit" onclick="getGoodsId()"> 去结算</div>
+					<form id="orderadd" action="{% url 'confimorder' %}" method="post">
+					{% csrf_token %}
 					<input type="hidden" name="idg" value="">
 					</form>
 				</div>
@@ -210,7 +233,8 @@
 		</div><!-- 结算详情 E-->
 	</div>
     <!-- 主内容区域 E-->
-	
+   
+	{% endblock %}
     <!-- 底部区域 -->
     <footer class="layout-footer  hidden-xs hidden-sm">
 		<div class="container">
@@ -357,7 +381,18 @@
 		</div>
     </div>
     <!-- 返回顶部 E-->
-	<script type="text/javascript">
+    <script>
+        var welcome = document.getElementById('welcome');
+        var we = welcome.innerText;
+        if(we){
+            $('.layout-header-service-item').eq(2).addClass('hidden')
+            $('.layout-header-service-item').eq(3).addClass('hidden')
+        }else{
+            $('.layout-header-service-item').eq(1).addClass('hidden')
+        }
+    </script>
+	{% block 'js' %}
+	 <script type="text/javascript">
         //回顶部
   		backTop();
   		//全选
@@ -369,7 +404,8 @@
   			if(n<=0){
   				return;
   			}
-  			g = $('.mz-adder-num').attr('gid')
+  			g = $(this).parent().find('input').attr('gid')
+  			// g = $('.mz-adder-num').attr('gid')
   			console.log('g',g)
   			$.get("{% url 'cartedit' %}",{num:n,gid:g},function(data){
   				console.log(data)
@@ -381,8 +417,44 @@
   			})
   		})
 
+		// 删除购物车商品
+		$('.glyphicon-remove').click(function(){
+			pid = $('.glyphicon-remove').attr('pid')
+			console.log('pid',pid)
+			$.get("{% url 'cartdel' %}",{'Pid':pid},function(){
+				console.log('data')
+			})
+		});
+
+		 // 获取选择的id
+    	function getGoodsId(){
+    	    arr = []
+    	    // 获取已经选中的元素,并获取gid
+    	    $('.checked').each(function(){
+    	        id = $(this).attr('gid')
+    	        console.log('id',id)
+    	        if(id){
+    	            arr[arr.length] = id
+    	            console.log('arr',arr)
+    	        }
+    	    })
+    	    // 判断是否选择了商品
+    	    if(arr.length<=0){
+    	        alert('请选择要购买的商品')
+    	        return;
+    	    }
+	
+    	    s = arr.join(',')
+    	    console.log('s',s)
+    	    console.log('sty',typeof(s))
+    	    $('input[name=idg]').val(s)
+	
+    	    $('#orderadd').submit()
+    	}
+				
 
 	</script>
+	{% endblock %}
 </body>
 
 </html>

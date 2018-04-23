@@ -29,6 +29,7 @@
     {% endblock %}
     <script type="text/javascript" src="/static/front/js/rem.js"></script>
     <script type="text/javascript" src="/static/front/js/topNav.js"></script>
+
 </head>
 <body class="app app-detail">
     {% block 'header' %}
@@ -38,32 +39,42 @@
             <div class="container clearfix">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <div class="layout-header-logo navbar-left">
-                        <a target="_blank" href="./index.html" class="layout-header-logo-link" alt="魅族科技">
+                        <a target="_blank" href="/user/index.html" class="layout-header-logo-link" alt="魅族科技">
                             <img src="/static/front/public/img/logo.png">
                         </a>
                     </div>
-                    <ul class="nav navbar-nav navbar-right layout-header-service clearfix">
+                    <ul class="nav navbar-nav navbar-right layout-header-service clearfix" id="fordel">
                         <li class="layout-header-service-item" id="layoutHeaderUser">
-                            <a class="layout-header-service-link g-user" href="#">
+                            <a href="javascript:;">欢迎!
+                                <span id="welcome">{{request.session.VipUser.username}}</span>
+                            </a>
+                        </li>
+                        <li class="layout-header-service-item am-text-sm">
+                            <a href="{% url 'logout' %}">
+                                <span class="am-icon-sign-out" id="userlogout"></span> 退出
+                            </a>
+                        </li>
+                        <li class="layout-header-service-item">
+                            <a href="login.html" >登录</a>
+                        </li>
+                        <li class="layout-header-service-item">
+                            <a href="{% url 'regedit' %}" target="_blank"  data-mtype="wmz_public_grzx_register">注册</a>
+                        </li>
+
+
+                        <li class="layout-header-service-item" id="layoutHeaderUser">
+                            <a class="layout-header-service-link g-user" href="{% url 'personal' %}" title="个人中心">
                                 <i class="glyphicon glyphicon-user"></i>
                             </a>
                             <div class="layout-user-downmenu">
                                 <ul class="layout-user-downmenu-list">
                                     <li class="layout-user-downmenu-item">
-                                        <a href="login.html" class="layout-user-downmenu-link">立即登录</a>
-                                    </li>
-                                    <li class="layout-user-downmenu-item">
-                                        <a href="{% url 'regedit' %}" target="_blank" class="layout-user-downmenu-link" data-mtype="wmz_public_grzx_register">立即注册</a>
-                                    </li>
-                                    <li class="layout-user-downmenu-item">
                                         <a href="#" class="layout-user-downmenu-link" data-mtype="wmz_public_grzx_myorder">我的订单</a>
-                                    </li>
-                                    <li class="layout-user-downmenu-item">
-                                        <a href="#" class="layout-user-downmenu-link" data-mtype="wmz_public_grzx_mformy">M码通道</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
+                        
                         <li class="layout-header-service-item layout-header-service-cart" id="layoutHeaderCart">
                             <a class="layout-header-service-link" href="{% url 'cartindex' %}" data-mtype="wmz_public_yt_cart">
                                 <i class="glyphicon glyphicon-shopping-cart"></i>
@@ -73,18 +84,8 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right layout-header-nav clearfix">
                         <li class="layout-header-nav-item">
-                            <a href="./index.html" class="layout-header-nav-link">魅族商城 </a>
+                            <a href="/user/index.html" class="layout-header-nav-link">魅族商城 </a>
                             <p class="line-top hidden-xs"></p>
-                        </li>
-                        {% for v in typelist %}
-                            {% if v.pid == 0 %}
-                            <li class="layout-header-nav-item">
-                                <a href="{% url 'list' v.id v.pid %}" class="layout-header-nav-link">{{ v.name }}</a>
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                        <li class="layout-header-nav-item">
-                            <a href="#" class="layout-header-nav-link">社区</a>
                         </li>
                     </ul>
                 </div>
@@ -600,13 +601,13 @@
     {% endblock %}
     <!-- 返回顶部 -->
     <div class="layout-magnet layout-magnet-show">
-            <div class="layout-magnet-item layout-magnet-item-top">
-                <a href="javascript:void(0);" class="layout-magnet-link" data-mtype="wmz_public_cbxf_top">
-                    <div class="layout-magnet-icon">
-                        <i class="glyphicon glyphicon-menu-up"></i>
-                    </div>
-                </a>
-            </div>
+        <div class="layout-magnet-item layout-magnet-item-top">
+            <a href="javascript:void(0);" class="layout-magnet-link" data-mtype="wmz_public_cbxf_top">
+                <div class="layout-magnet-icon">
+                    <i class="glyphicon glyphicon-menu-up"></i>
+                </div>
+            </a>
+        </div>
     </div>
         
     <!-- 返回顶部 E-->
@@ -621,6 +622,18 @@
     leftNav();
     </script>
     {% block 'add' %}
+    {% endblock %}
+    {% block 'js' %}
+    <script>
+        var welcome = document.getElementById('welcome');
+        var we = welcome.innerText;
+        if(we){
+            $('.layout-header-service-item').eq(2).addClass('hidden')
+            $('.layout-header-service-item').eq(3).addClass('hidden')
+        }else{
+            $('.layout-header-service-item').eq(1).addClass('hidden')
+        }
+        </script>
     {% endblock %}
 </body>
 

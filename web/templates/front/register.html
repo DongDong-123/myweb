@@ -70,9 +70,7 @@
                                 <li class="layout-user-downmenu-item">
                                     <a href="#" class="layout-user-downmenu-link" data-mtype="  wmz_public_grzx_myorder">我的订单</a>
                                 </li>
-                                <li class="layout-user-downmenu-item">
-                                    <a href="#" class="layout-user-downmenu-link" data-mtype="wmz_public_grzx_mformy    ">M码通道</a>
-                                </li>
+                                
                             </ul>
                         </div>
                     </li>
@@ -87,9 +85,6 @@
                     <li class="layout-header-nav-item">
                         <a href="{% url 'index' %}" class="layout-header-nav-link">魅族商城 </a>
                         <p class="line-top hidden-xs"></p>
-                    </li>
-                    <li class="layout-header-nav-item">
-                        <a href="#" class="layout-header-nav-link">社区</a>
                     </li>
                 </ul>     
             </div>
@@ -237,9 +232,9 @@
     </div>
     <!-- 底部区域 E -->
   
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   nLogin();
-</script>
+</script> -->
 
 <script type="text/javascript">
     var Regeditform = document.getElementById('regeditform');
@@ -248,18 +243,12 @@
     var Pwd2 = Regeditform.password2;
     var Phone = Regeditform.phone;
 
-    // var notice1 = document.getElementById('notice1');
-    // var notice2 = document.getElementById('notice2');
-    // var notice3 = document.getElementById('notice3');
-    // var notice4 = document.getElementById('notice4');
-
-    var nameResult 
-    var pwd1Result
-    var pwd2Result
-    var phoneResult
-    var passd1
-    var passd2
-
+    var nameResult; 
+    var pwd1Result;
+    var pwd2Result;
+    var phoneResult;
+    var passd1;
+    var passd2;
 
     Names.onfocus = function(){
         $('.uname span').html('请输入4-12位的数字字母下划线');
@@ -268,9 +257,9 @@
     Names.onblur = function(){
         var nam = Names.value;
         var reg = /^\w{4,12}$/;
-        console.log('nam',nam)
+        console.log('nam',nam);
         nameResult = reg.test(nam);
-        console.log('nameResult',nameResult)
+        console.log('nameResult',nameResult);
         if(nameResult){
             $.get('{% url 'checkregedit' %}',{'Nam':nam},function(data){
                 console.log('data',data)
@@ -289,8 +278,8 @@
     };
 
     Pwd1.onfocus = function(){
-        $('.pw1 span').html('请输入6-12位的数字字母下划线')
-        $('.pw1 span').css('color','#ccc')
+        $('.pw1 span').html('请输入6-12位的数字字母下划线');
+        $('.pw1 span').css('color','#ccc');
     };
     Pwd1.onblur = function(){
         passd1 = Pwd1.value;
@@ -303,11 +292,11 @@
         }else{
             $('.pw1 span').html('输入错误');
             $('.pw1 span').css('color','red');
-        }
+        };
     };
     Pwd2.onfocus = function(){
-            $('.pw2 span').html('请输入6-12位的数字字母下划线')
-            $('.pw2 span').css('color','#ccc')
+            $('.pw2 span').html('请输入6-12位的数字字母下划线');
+            $('.pw2 span').css('color','#ccc');
         };
         Pwd2.onblur = function(){
             passd2 = Pwd2.value;
@@ -342,26 +331,9 @@
         }else{
             $('.phonenum span').html('输入错误');
             $('.phonenum span').css('color','red');
-        }
-    }
+        };
+    };
 
-
-
-
-// Names.onblur = function(){
-            
-//             // $.get 1.请求地址 2.可选的携带的参数,参数的格式必须是对象类型,3.回调函数,ajax请求成功之后执行的函数
-//             // data 服务器返回的数据
-//             $.get('/home/urls.py',function(data){
-//                 console.log(typeof(data));
-//                 console.log(data);
-//                 var D = eval(data);  //如果data不是一个原生字符串（如'4'，'true',这种通过数据类型转换变成的字符串），使用eval函数，把data恢复到原本的数据类型(4 number类型,true boolean类型)；若打data本身就是字符串（如'hello',) 为什么返回的是一个对象？
-//                 console.log(D);
-//                 console.log(typeof(D));  //当data为字符串时，此时D返回的是一个对象类型
-
-//                 $('div').html(data);  //把返回的文本写到页面内
-//             },);    
-//         }
 </script>
 </body>
 </html>

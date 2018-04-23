@@ -12,12 +12,13 @@ from django.contrib.auth.hashers import check_password
 
 
 # Create your views here.
+# 首页
 def myadmin(request):
 	return render(request,'back/base.html')
-
+# 用户添加
 def uadd(request):
 	return render(request,'back/useradd.html')
-
+# 用户插入
 def insert(request):
 	ob = Users()
 	# print('ob',ob)
@@ -29,20 +30,17 @@ def insert(request):
 		ob.img =  settings.BASE_DIR+'static/public/img/9110.jpg'
 	else:
 		ob.img = request.FILES.get('img')
-
-
 	ob.save()
 
 	return HttpResponse("<script>alert('添加成功'),location.href='/myadmin/ulist'</script>")
-
+# 用户列表
 def ulist(request):
 	# 搜索
-	
 	v = request.GET.get('keywords','')
 	arr = {
 	1:['会员','会','员'],
 	2:['禁用','禁','用'],
-	3:['管理员','管理','管','理'],
+	0:['管理员','管理','管','理'],
 	}
 	state = 0
 	for k,x in arr.items():
@@ -51,14 +49,13 @@ def ulist(request):
 
 	from django.db.models import Q
 	ob = Users.objects.filter(Q(id__contains=v)|Q(username__contains=v)|Q(email__contains=v)|Q(state__contains=state))
-	
 	# 分页
 	paginator = Paginator(ob, 4)
 	p = int(request.GET.get('p', 1))
 	userlist = paginator.page(p)
 	content = {'users':userlist, 'p':p}
 	return render(request, 'back/userlist.html', content)
-
+# 用户删除
 def udel(request,uid):
 	ob = Users.objects.get(id=uid)
 	del_img = ob.img
@@ -67,13 +64,12 @@ def udel(request,uid):
 	if str(del_img) !=  'static/public/img/9110.jpg':
 		os.remove(settings.BASE_DIR+path_img)
 	return HttpResponse("<script>alert('删除成功'),location.href='/myadmin/ulist'</script>")
-
+# 用户编辑
 def uedit(request, uid):
 	ob = Users.objects.get(id=uid)
 	content = {'oinfo':ob}
-	# print(content)
 	return render(request,'back/useredit.html',content)
-
+# 用户更新
 def uupdate(request):
 	ob = Users.objects.get(id=request.POST['id'])
 	oc = Users()
@@ -92,10 +88,10 @@ def uupdate(request):
 			os.remove(settings.BASE_DIR+path_img)
 	ob.save()
 	return HttpResponse("<script>alert('修改成功'),location.href='/myadmin/ulist'</script>")
-
+# 后台登录
 def login(request):
 	return render(request,'back/login.html')
-
+# 执行登录
 def dologin(request):
 	if request.session['verifycode'] != request.POST.get('vcode'):
 		return HttpResponse('<script>alert("验证码错误");location.href="/myadmin/login"</script>')
@@ -103,7 +99,7 @@ def dologin(request):
 		ob = Users.objects.get(username = request.POST['username'])
 		if ob.state == 0:
 			if check_password(request.POST['password'],ob.password):
-				request.session['AdminLoginS'] = {'uid':ob.id, 'username':ob.username,}
+				request.session['AdminLoginS'] = {'uid':ob.id, 'username':ob.username,'img':str(ob.img)}
 				return HttpResponse('<script>alert("登录成功");location.href="/myadmin/ulist"</script>')
 			else:
 				raise
@@ -112,11 +108,11 @@ def dologin(request):
 	except:
 		pass
 	return HttpResponse("<script>alert('登录失败'),location.href='/myadmin/login'</script>")
-
+# 后台退出
 def logout(request):
 	request.session['AdminLoginS'] = {}
 	return HttpResponse("<script>alert('已退出登录'),location.href='/myadmin/login'</script>")
-
+# 验证码
 def verifycode(request):
     from PIL import Image, ImageDraw, ImageFont
     import random

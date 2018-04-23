@@ -56,14 +56,14 @@
                                 </a>
                             </li>
                             <!-- 新邮件 -->
-                            <li class="am-dropdown tpl-dropdown" data-am-dropdown>
+                           <!--  <li class="am-dropdown tpl-dropdown" data-am-dropdown>
                                 <a href="javascript:;" class="am-dropdown-toggle tpl-dropdown-toggle"   data-am-dropdown-toggle>
                                     <i class="am-icon-envelope"></i>
                                     <span class="am-badge am-badge-success am-round item-feed-badge">4
                                     </span>
-                                </a>
+                                </a> -->
                                 <!-- 弹出列表 -->
-                                <ul class="am-dropdown-content tpl-dropdown-content">
+                                <!-- <ul class="am-dropdown-content tpl-dropdown-content">
                                     <li class="tpl-dropdown-menu-messages">
                                         <a href="javascript:;" class="tpl-dropdown-menu-messages-item am-cf">
                                             <div class="menu-messages-ico">
@@ -90,18 +90,18 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
     
                             <!-- 新提示 -->
-                            <li class="am-dropdown" data-am-dropdown>
+                            <!-- <li class="am-dropdown" data-am-dropdown>
                                 <a href="javascript;" class="am-dropdown-toggle" data-am-dropdown-toggle>
                                     <i class="am-icon-bell"></i>
                                     <span class="am-badge am-badge-warning am-round item-feed-badge">5
                                     </span>
-                                </a>
+                                </a> -->
     
                                 <!-- 弹出列表 -->
-                                <ul class="am-dropdown-content tpl-dropdown-content">
+                               <!--  <ul class="am-dropdown-content tpl-dropdown-content">
                                     <li class="ropdown-menu-notifications">
                                         <a href="javascript:;" class="tpl-dropdown-menu-notifications-item am-cf">
                                             <div class="tpl-dropdown-menu-notifications-title">
@@ -113,8 +113,8 @@
                                             </div>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                </ul> -->
+                           <!--  </li> -->
     
                             <!-- 退出 -->
                             <li class="am-text-sm">
@@ -146,7 +146,7 @@
                 <div class="tpl-sidebar-user-panel">
                     <div class="tpl-user-panel-slide-toggleable">
                         <div class="tpl-user-panel-profile-picture">
-                            <img src="/static/back/img/user04.png" alt="">
+                            <img src="/{{ request.session.AdminLoginS.img }}" alt="">
                         </div>
                         <span class="user-panel-logged-in-text">
                             <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon">
@@ -160,10 +160,7 @@
     
                 <!-- 菜单 -->
                 <ul class="sidebar-nav">
-                    <li class="sidebar-nav-heading">Components 
-                        <span class="sidebar-nav-heading-info">附加组件
-                        </span>
-                    </li>
+                    
                     <li class="sidebar-nav-link">
                         <a href="index.html" class="active">
                             <i class="am-icon-home sidebar-nav-link-logo">
@@ -203,14 +200,13 @@
                         </a>
                         <ul class="sidebar-nav sidebar-nav-sub">
                             <li class="sidebar-nav-link">
-                                <a href="{% url 'typeadd' %}">
-                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span  > 分类添加
-                                </a>
-                            </li>
-    
-                            <li class="sidebar-nav-link">
                                 <a href="{% url 'typelist' %}">
                                     <span class="am-icon-angle-right sidebar-nav-link-logo"></span  > 分类管理
+                                </a>
+                            </li>
+                            <li class="sidebar-nav-link">
+                                <a href="{% url 'typeadd' %}">
+                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span  > 分类添加
                                 </a>
                             </li>
                         </ul>
@@ -245,11 +241,6 @@
                             <li class="sidebar-nav-link">
                                 <a href="{% url 'orderlist' %}">
                                     <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 订单列表
-                                </a>
-                            </li>
-                            <li class="sidebar-nav-link">
-                                <a href="table-list-img.html">
-                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 订单编辑
                                 </a>
                             </li>
                         </ul>
