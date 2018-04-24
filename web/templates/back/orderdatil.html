@@ -13,8 +13,8 @@
         </div>
     </div>
     <div class="am-u-md-9 am-u-md-offset-1">
-        <form action="{% url 'orderupdate' %}" method="post" enctype="multipart/    form-data">
-        {% csrf_token %}
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <input type="hidden" name="id" value="{{ tinfo.id}}">
             <div class="am-form-group">
                 ID:<span>{{ tinfo.id }}</span>
@@ -34,13 +34,16 @@
             <div class="am-form-group">
                下单时间:<span>{{ tinfo.addtime }}</span>
             </div>
-                状态 <select name="state" style="width: 200px;height: 30px">
-                        <option value="1">已付款</option>
-                        <option value="2">未付款</option>
-                        <option value="0">已关闭</option>
-                    </select><br><br>
-            <button type="submit" style="width: 60px;">修改
-            </button>
+            状态：<span>
+             {% if v.status == 1 %}
+                    已付款
+                {% elif v.status == 2 %}
+                    未付款
+                {% else %}
+                    已关闭
+            {% endif %}
+            </span>
+            <br>
         </form>
     </div>
 </div>

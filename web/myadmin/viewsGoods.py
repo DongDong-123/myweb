@@ -6,6 +6,7 @@ import os, time
 
 # 商品列表
 def Goodslist(request):
+	# 搜索
 	v = request.GET.get('keywords','')
 	arr = {
 	1:['新品','新','品'],
@@ -19,7 +20,7 @@ def Goodslist(request):
 
 	from django.db.models import Q
 	ob = Goods.objects.filter(Q(id__contains=v)|Q(goods__contains=v)|Q(typeid__name__contains=v)|Q(price__contains=v)|Q(state__contains=state))
-	
+	# 分页
 	from django.core.paginator import Paginator
 	paginator = Paginator(ob, 6)
 	p = int(request.GET.get('p', 1))
@@ -33,8 +34,8 @@ def Goodslist(request):
 def Goodsadd(request):
 	obs = Types.objects.all()
 	context = {'types':obs}
-
 	return render(request,'back/goodsadd.html', context)
+
 # 商品插入
 def Goodsinsert(request):
 	try:
@@ -53,6 +54,7 @@ def Goodsinsert(request):
 	except Exception as e:
 		print(Exception,e)
 		return HttpResponse('<script>alert("添加失败"); location.href="/myadmin/goodslist"</script>')
+
 # 商品删除
 def Goodsdel(request, gid):
 	try:
@@ -67,6 +69,7 @@ def Goodsdel(request, gid):
 		return HttpResponse('<script>alert("删除失败"); location.href="/myadmin/goodslist"</script>')
 
 	return HttpResponse('goodsdel')
+	
 # 商品编辑
 def Goodsedit(request, gid):
 	obs = Types.objects.all()
@@ -75,7 +78,6 @@ def Goodsedit(request, gid):
 	print('oc',oc)
 	context = {'editinfo':ob, 'types':obs}
 	print("ob",ob.typeid_id)
-
 	return render(request,'back/goodsedit.html', context)
 
 # 商品更新
@@ -108,6 +110,5 @@ def upload(request):
 	for chunk in myfile.chunks():
 		up.write(chunk)
 	up.close()
-	
 	return "/static/public/img/"+filename
 

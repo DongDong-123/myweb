@@ -25,9 +25,7 @@
             right:0;
         }
     </style>
-
 </head>
-
 <body data-type="login">
     <script src="/static/back/js/theme.js"></script>
     <div class="am-g tpl-g">
@@ -49,12 +47,12 @@
             <div class="tpl-login-content">
                 <div class="tpl-login-logo">
                 </div>
+                <!-- 登录表单 -->
                 <form action="{% url 'admindologin' %}" method="post" class="am-form tpl-form-line-form">
                 {% csrf_token %}
                     <div class="am-form-group">
                         <input type="text" name="username" class="tpl-form-input" placeholder="请输入账号">
                     </div>
-
                     <div class="am-form-group">
                         <input type="password" name="password" class="tpl-form-input" placeholder="请输入密码">
                     </div> 
@@ -62,7 +60,6 @@
                         <img hidden src="{% url 'vcode' %}" alt="" ><span>点击获取验证码</span>
                         <input type="text" name="vcode" class="tpl-form-input" placeholder="请输入验证码">
                     </div>
-
                     <div class="am-form-group">
                         <button class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">登录</button>
                     </div>
@@ -82,7 +79,6 @@
             $(this).attr("src","{% url 'vcode' %}?"+Math.random())
         })
     </script>
-
 </body>
 
 </html>

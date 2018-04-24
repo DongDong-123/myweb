@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from myadmin.models import Goods,Types,Users,Orders,Detail
+from myadmin.models import Goods,Types,Users,Orders,Detail,Turnimg
 from myadmin.views import insert
 from django.conf import settings
 import time 
@@ -77,6 +77,9 @@ def logout(request):
 	return HttpResponse("<script>alert('已退出登录'),location.href='/user/index'</script>")
 # 商城首页
 def index(request):
+	# 轮播图
+	cimg = Turnimg.objects.all()
+	# 首页商品列表
 	t = Types.objects.filter(pid=0)
 	arr = []
 	for v in t:
@@ -87,7 +90,7 @@ def index(request):
 
 	data = Types.objects.all()
 	glist_ob = Goods.objects.all()
-	context = {'typelist':data,'typegood':arr,'glist':glist_ob}
+	context = {'typelist':data,'typegood':arr,'glist':glist_ob,'cimg':cimg}
 
 	return render(request,'front/index.html',context)
 # 商品列表
@@ -245,7 +248,7 @@ def payonline(request,oid):
 
     ob.status = 2
     
-    return HttpResponse('<script>alert("付款成功");location.href="/cartindex"</script>')
+    return HttpResponse('<script>alert("付款成功");location.href="/user/cartindex"</script>')
 # 用户中心
 def personal(request):
 	return render(request,'front/personal.html')
@@ -283,6 +286,28 @@ def myorder(request):
 	content = {'orderlist':orderlist, 'p':p,'buyer':buyer}
 
 	return render(request,'front/myorder.html',content)
+
+# 编辑订单
+def editmyorder(request,tid):
+	ob = Orders.objects.get(id = tid)
+	# obs = Orders.objects.all()
+	context = {'tinfo':ob}
+	return render(request,'front/orderedit.html', context)
+
+def myorderupdate(request):
+	try:
+		ob = Orders.objects.get(id = request.POST.get('id'))
+		print(ob.status)
+		print(request.POST['id'])
+		ob.linkman = request.POST['linkname']
+		ob.phone = request.POST['phone']
+		ob.address = request.POST['address']
+		ob.save()
+		return HttpResponse('<script>alert("修改成功");location.href="/user/myorder"</script>')
+	except:
+		return HttpResponse('<script>alert("修改失败");location.href="/user/myorder"</script>')
+
+
 
 
 

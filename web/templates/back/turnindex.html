@@ -1,0 +1,27 @@
+{% extends './base.html' %}
+
+{% block 'forms' %}
+<div class="tpl-content-wrapper">
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading">
+                    <span class="am-icon-home page-header-heading-icon">
+                    </span>轮播图展示
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 图片展示 -->
+    <div class="am-u-md-12 am-u-md-offset-3">
+    	<div class="am-form-group">
+            {% for i in allimg %}
+            <ol>
+                <li style="display: inline;">{{i.id}}</li>
+                <li style="display: inline;"><img src="/{{i.img}}" alt="" width="500px"></li>
+            </ol>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

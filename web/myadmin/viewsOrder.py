@@ -27,12 +27,21 @@ def Orderlist(request):
 	orderlist = paginator.page(p)
 	content = {'orderlist':orderlist, 'p':p}
 	return render(request, 'back/orderlist.html',content)
+	
 # 订单编辑
 def Orderedit(request, tid):
 	ob = Orders.objects.get(id = tid)
 	# obs = Orders.objects.all()
 	context = {'tinfo':ob}
 	return render(request,'back/orderedit.html', context)
+
+
+def orderdatil(request,tid):
+	ob = Orders.objects.get(id = tid)
+	# obs = Orders.objects.all()
+	context = {'tinfo':ob}
+	return render(request,'back/orderdatil.html', context)
+
 # 订单更新
 def Orderupdate(request):
 	try:

@@ -149,7 +149,6 @@ function allSelect(){
 
   //单选
   $('.cart-col-select .mz-checkbox').click(function(){
-
       $(this).toggleClass('checked');
       // var judg = $('.cart-col-select div')hasClass('checked')
       if($('.cart-col-select').prevAll('div').hasClass('checked')){
@@ -157,7 +156,6 @@ function allSelect(){
           // $('.cart-col-select .mz-checkbox').addClass('checked');
       }else{
       $('.JSelectAll div').removeClass('checked');
-
       }
   })
 }
@@ -197,8 +195,6 @@ function cartAddMin(){
            // 商品数量
            var n=$nInput.val();
            var num=parseInt(n)-1;
-
-           
 
            //获取当前商品的单价
            var $nPrice = $(this).parents('#'+prod).find('.cart-col-price .cart-product-price');

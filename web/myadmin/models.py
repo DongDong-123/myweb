@@ -1,6 +1,6 @@
 from django.db import models 
 
-
+# 用户
 class Users(models.Model):
 	username = models.CharField(max_length=32, unique=True)
 	name = models.CharField(max_length=16, null=True) 
@@ -17,7 +17,7 @@ class Users(models.Model):
 	def __str__(self):
 		return self.username
 
-
+# 分类
 class Types(models.Model):	
 	name = models.CharField(max_length=32)
 	pid = models.IntegerField(default=0)
@@ -26,7 +26,7 @@ class Types(models.Model):
 	def __str__(self):
 		return self.name
 	
-
+# 商品
 class Goods(models.Model):
 	typeid = models.ForeignKey(to='Types', to_field='id')
 	goods = models.CharField(max_length=32)
@@ -42,6 +42,7 @@ class Goods(models.Model):
 	def __str__(self):
 		return self.goods
 
+# 订单
 class Orders(models.Model):
 	uid = models.ForeignKey('Users',to_field="id")
 	linkman = models.CharField(max_length=32)
@@ -56,7 +57,7 @@ class Orders(models.Model):
 	def __str__(self):
 		return self.linkman
 
-
+# 订单详情
 class Detail(models.Model):
 	orderid = models.OneToOneField(Orders)
 	goodsid = models.ForeignKey('Goods',to_field="id")
@@ -66,3 +67,7 @@ class Detail(models.Model):
 
 	def __str__(self):
 		return self.name
+
+# 轮播图控制
+class Turnimg(models.Model):
+	img = models.ImageField(upload_to='static/public/front/public/img')

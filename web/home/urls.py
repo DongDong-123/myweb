@@ -45,6 +45,10 @@ urlpatterns = [
     # 个人中心
     url(r'^user/personal', views.personal, name='personal'),
     # 我的订单
-    url(r'^user/myorder', views.myorder, name='myorder'),
+    url(r'^user/myorder/$', views.myorder, name='myorder'),
+    url(r'^user/editmyorder/(?P<tid>[0-9]+)', views.editmyorder, name='editmyorder'),
+    url(r'^user/myorderupdate', views.myorderupdate, name='myorderupdate'),
+    
+
 ]
 

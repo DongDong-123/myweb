@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . models import Users
+from . models import Users ,Turnimg
 import os
 from django.conf import settings
 # 分页
@@ -11,13 +11,14 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 
 
-# Create your views here.
 # 首页
 def myadmin(request):
 	return render(request,'back/base.html')
+
 # 用户添加
 def uadd(request):
 	return render(request,'back/useradd.html')
+
 # 用户插入
 def insert(request):
 	ob = Users()
@@ -27,12 +28,13 @@ def insert(request):
 	ob.email = request.POST.get('email')
 	ob.state = request.POST.get('state')
 	if not request.FILES.get('img'):
-		ob.img =  settings.BASE_DIR+'static/public/img/9110.jpg'
+		ob.img = 'static/public/img/9110.jpg'
 	else:
 		ob.img = request.FILES.get('img')
 	ob.save()
 
 	return HttpResponse("<script>alert('添加成功'),location.href='/myadmin/ulist'</script>")
+
 # 用户列表
 def ulist(request):
 	# 搜索
@@ -55,6 +57,7 @@ def ulist(request):
 	userlist = paginator.page(p)
 	content = {'users':userlist, 'p':p}
 	return render(request, 'back/userlist.html', content)
+
 # 用户删除
 def udel(request,uid):
 	ob = Users.objects.get(id=uid)
@@ -62,13 +65,15 @@ def udel(request,uid):
 	ob.delete()
 	path_img = "./"+ str(del_img)
 	if str(del_img) !=  'static/public/img/9110.jpg':
-		os.remove(settings.BASE_DIR+path_img)
+		os.remove(path_img)
 	return HttpResponse("<script>alert('删除成功'),location.href='/myadmin/ulist'</script>")
+
 # 用户编辑
 def uedit(request, uid):
 	ob = Users.objects.get(id=uid)
 	content = {'oinfo':ob}
 	return render(request,'back/useredit.html',content)
+	
 # 用户更新
 def uupdate(request):
 	ob = Users.objects.get(id=request.POST['id'])
@@ -85,12 +90,14 @@ def uupdate(request):
 		ob.img = request.FILES.get('img')
 		path_img = "./" + str(edit_img)
 		if str(edit_img) != 'static/public/img/9110.jpg':
-			os.remove(settings.BASE_DIR+path_img)
+			os.remove(path_img)
 	ob.save()
 	return HttpResponse("<script>alert('修改成功'),location.href='/myadmin/ulist'</script>")
+
 # 后台登录
 def login(request):
 	return render(request,'back/login.html')
+
 # 执行登录
 def dologin(request):
 	if request.session['verifycode'] != request.POST.get('vcode'):
@@ -108,10 +115,12 @@ def dologin(request):
 	except:
 		pass
 	return HttpResponse("<script>alert('登录失败'),location.href='/myadmin/login'</script>")
+
 # 后台退出
 def logout(request):
 	request.session['AdminLoginS'] = {}
 	return HttpResponse("<script>alert('已退出登录'),location.href='/myadmin/login'</script>")
+
 # 验证码
 def verifycode(request):
     from PIL import Image, ImageDraw, ImageFont
@@ -145,3 +154,62 @@ def verifycode(request):
     buf = io.BytesIO()
     im.save(buf, 'png')
     return HttpResponse(buf.getvalue(), 'image/png')
+
+# 轮播图列表
+def turnindex(request):
+	ob = Turnimg.objects.all()
+	context = {'allimg':ob }
+	return render(request,'back/turnindex.html',context)
+
+# 轮播图控制
+def turnimg(request):
+	ob = Turnimg.objects.all()
+	context = {'allimg':ob }
+	return render(request,'back/turnimgedit.html',context)
+
+# 轮播图插入
+def insertturnimg(request):
+	print('aa')
+	try:
+		ob = Turnimg()
+		ob.img = request.FILES.get('img')
+		print('img',ob.img)
+		ob.save()
+		return HttpResponse("<script>alert('上传成功'),location.href='/myadmin/'</script>")
+	except:
+		return HttpResponse("<script>alert('上传失败'),location.href='/myadmin/'</script>")
+
+# 轮播图替换
+def changeimg(request):
+	ob = Turnimg.objects.all()
+	context = {'allimg':ob }
+	return render(request,'back/changeimg.html',context)
+
+# 轮播图更新
+def imgupdate(request):
+	ob = Turnimg.objects.get(id=request.POST.get('turnimg'))
+	# print(ob)
+	ob.img = request.FILES.get('img')
+	ob.save()
+	return HttpResponse("<script>alert('上传成功'),location.href='/myadmin/changeimg'</script>")
+
+# 轮播图删除
+def delimg(request):
+	ob = Turnimg.objects.all()
+	context = {'allimg':ob }
+	return render(request,'back/delimg.html',context)
+
+# 执行删除
+def imgsdel(request):
+	ob = Turnimg.objects.get(id=request.POST.get('turnimg'))
+	ob.delete()
+	return HttpResponse("<script>alert('删除成功'),location.href='/myadmin/delimg'</script>")
+
+
+
+
+
+
+
+
+

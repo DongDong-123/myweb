@@ -42,12 +42,21 @@ urlpatterns = [
     url(r'^myadmin/goodsupdate/', viewsGoods.Goodsupdate, name='goodsupdate'),
     # 订单管理
     url(r'^myadmin/orderlist/', viewsOrder.Orderlist, name='orderlist'),
-    url(r'^myadmin/orderedit//(?P<tid>[0-9]+)', viewsOrder.Orderedit, name='orderedit'),
+    url(r'^myadmin/orderedit/(?P<tid>[0-9]+)', viewsOrder.Orderedit, name='orderedit'),
     url(r'^myadmin/orderupdate/', viewsOrder.Orderupdate, name='orderupdate'),
+    url(r'^myadmin/orderdatil/(?P<tid>[0-9]+)', viewsOrder.orderdatil, name='orderdatil'),
     # 后台登录
     url(r'^myadmin/login', views.login, name='adminlogin'),
     url(r'^myadmin/dologin', views.dologin, name='admindologin'),
     url(r'^myadmin/logout', views.logout, name='adminlogout'),
     url(r'^myadmin/verifycode', views.verifycode, name='vcode'),
+    # 轮播图控制
+    url(r'^myadmin/turnindex/$', views.turnindex, name='turnindex'),
+    url(r'^myadmin/turnimg/$', views.turnimg, name='turnimg'),
+    url(r'^myadmin/insertturnimg', views.insertturnimg, name='insertturnimg'),
+    url(r'^myadmin/changeimg', views.changeimg, name='changeimg'),
+    url(r'^myadmin/imgupdate', views.imgupdate, name='imgupdate'),
+    url(r'^myadmin/delimg', views.delimg, name='delimg'),
+    url(r'^myadmin/imgsdel', views.imgsdel, name='imgsdel'),
 
 ]

@@ -28,14 +28,13 @@
                         </div>
                         <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
                             <form action="" method="">
-                            <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                                <input type="text" name="keywords" value="{{ request.GET.keywords }}" class="am-form-field ">
-
-                            	<span class="am-input-group-btn">
-									<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search">
-									</button>
-								</span>
-                            </div>
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" name="keywords" value="{{ request.GET.keywords }}" class="am-form-field ">
+                                	<span class="am-input-group-btn">
+							 		  <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search">
+							 		  </button>
+							 	   </span>
+                                </div>
                             </form>
                         </div>
                         <div class="am-u-sm-offset-1 am-u-sm-10">
@@ -49,31 +48,28 @@
                                 </thead>
                                 <tbody>
                                 {% for i in typepage %}
-                                <tr class="gradeX">
-                                    <td class="am-text-middle">{{ i.id }}</td>
-                                    <!-- 占位 -->
-                                    <td class="am-text-middle">{{ i.name}}</td>
-                                    <td class="am-text-middle">
-                                        <div class="tpl-table-black-operation">
-                                            <a href="{% url 'typeedit' i.id %}"> 
-                                                <i class="am-icon-pencil"></i> 编辑
-                                            </a>
-                                            <a href="{% url 'typedel' i.id %}" class="tpl-table-black-operation-del">
-                                                <i class="am-icon-trash"></i> 删除
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr class="gradeX">
+                                        <td class="am-text-middle">{{ i.id }}</td>
+                                        <!-- 占位 -->
+                                        <td class="am-text-middle">{{ i.name}}</td>
+                                        <td class="am-text-middle">
+                                            <div class="tpl-table-black-operation">
+                                                <a href="{% url 'typeedit' i.id %}"> 
+                                                    <i class="am-icon-pencil"></i> 编辑
+                                                </a>
+                                                <a href="{% url 'typedel' i.id %}" class="tpl-table-black-operation-del">
+                                                    <i class="am-icon-trash"></i> 删除
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 {% endfor %}
-                                   
-                                    <!-- more data -->
                                 </tbody>
                             </table>
                         </div>
                         <div class="am-u-lg-12 am-cf">
                             <div class="am-fr">
                                 <ul class="am-pagination tpl-pagination">
-                                    
                                     {% load pagetag %}
                                     {% PageShow typepage.paginator.num_pages request %}
                                 </ul>

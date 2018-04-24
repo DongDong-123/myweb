@@ -1,0 +1,36 @@
+{% extends './base.html' %}
+
+{% block 'forms' %}
+    <div class="tpl-content-wrapper">
+        <div class="container-fluid am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                    <div class="page-header-heading">
+                        <span class="am-icon-home page-header-heading-icon">
+                        </span>轮播图删除
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-u-md-9 am-u-md-offset-3">
+            <form class="am-form am-form-horizontal" action="{% url 'imgsdel' %}" method="post"     enctype="   multipart/form-data">
+            {% csrf_token %}
+        	<div class="am-form-group">
+                {% for i in allimg %}
+                <ol>
+                    <input type="radio" name="turnimg" value="{{ i.id }}">
+                    <li style="display: inline;">序号{{i.id}}</li>
+                    <li style="display: inline;"><img src="/{{i.img}}" alt="" width="500px"></li>
+                </ol>
+                {% endfor %}
+            </div>
+            <div class="am-form-group">
+                <div class="am-u-sm-10 am-u-sm-offset-2">
+                    <button type="submit" class="am-btn am-btn-default"  style="width:200px;background: #337ab7">删除
+                    </button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
