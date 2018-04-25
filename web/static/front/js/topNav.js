@@ -109,22 +109,13 @@
             $(this).prev().val(num);
           })
       }// 数量增加减少E
-  /*---------------------------------------------------*/ 
-  /*移动端特效-----------------------------------------*/
-  // function appTopNav(){
-  //   $(window).scroll(function(){
-  //     var dTop = $(document).scrollTop();
-  //     if(dTop>0){
-  //       $('#J_listFilter').addClass('fixed');
-  //     }else{
-  //       $('#J_listFilter').removeClass('fixed');
-  //     }
-  //   })
-  // }
-  /*---------------------------------------------------*/ 
   
 
 /*购物车--------------------------------------------*/ 
+var buyid = []
+var buynum
+
+
 
 //选择框操作
 function allSelect(){
@@ -133,40 +124,61 @@ function allSelect(){
   var see = false;
   
   // 全选
-  $('.JSelectAll .mz-checkbox').click(function(){
-    if(aee==false){
-      $(this).addClass('checked');
-      $('.JSelectAll div').addClass('checked');
-      $('.cart-col-select .mz-checkbox').addClass('checked');
+    $('.JSelectAll .mz-checkbox').click(function(){
+        if(aee == false){
+            $('.JSelectAll .mz-checkbox').addClass('checked');
+            $('.cart-col-select2 .mz-checkbox').addClass('checked');
+            aee = true;
+        }else{
+            $('.JSelectAll .mz-checkbox').removeClass('checked');
+            $('.cart-col-select2 .mz-checkbox').removeClass('checked');
+            aee = false;
+        };
+    });
+  
+    //单选
+    $('.cart-col-select2 .mz-checkbox').click(function(){
+        $(this).toggleClass('checked');
+        var selectindex = $(this).parents('.cart-product').index()
+        buyid.push(selectindex)
+        buynum= buyid.length
+        // console.log('buynum1',buynum)
+        // console.log('buyid',buyid)
+        // console.log('selectindex',selectindex,typeof(selectindex))
+        var count = $(".cart-col-select2 .checked").length;
+        var countall = $(".cart-col-select2").length;
+        if(count==countall){
+            $('.JSelectAll .mz-checkbox').addClass('checked');
+        }else{
+            $('.JSelectAll .mz-checkbox').removeClass('checked');
+      };
+    // 计算选中商品数量和总价
+    // var nums = buyid.length
+    // console.log('nums',nums,typeof(nums))
+    // var sinTotals = Number($(this).parents('.cart-product').children().find('.cart-product-price ').text())
+    // console.log('sinTotals',sinTotals,typeof(sinTotals))
+    });
+    $('.mz-checkbox').change(function(){
+        $(this).parents('.cart-product').children('.total')
+        if(){}
 
-      aee = true;
-    }else{
-      $('.JSelectAll .mz-checkbox').removeClass('checked');
-      $('.cart-col-select .mz-checkbox').removeClass('checked');
-      aee = false;
-    }
-  })
-
-  //单选
-  $('.cart-col-select .mz-checkbox').click(function(){
-      $(this).toggleClass('checked');
-      // var judg = $('.cart-col-select div')hasClass('checked')
-      if($('.cart-col-select').prevAll('div').hasClass('checked')){
-         $('.JSelectAll div').addClass('checked');
-          // $('.cart-col-select .mz-checkbox').addClass('checked');
-      }else{
-      $('.JSelectAll div').removeClass('checked');
-      }
-  })
-}
+    })
+};
 
 // 数量增加减少
 function cartAddMin(){
       var pList = $('.cart-product');
+      console.log('pList',pList.length)
+      // console.log('buynum2',buynum)
+      //选中商品数量
+      var count = $(".cart-col-select2 .checked").length;
+
       //页面底部显示初始值
       //初始商品总数量
-      $('#totalCount').html(pList.length); 
+      $('#totalCount').html(count);
+
       var fsnC = Number( $('#totalCount').text());
+      console.log('fsnC',fsnC)
 
       //初始商品总和
       var i = 0;
@@ -174,37 +186,54 @@ function cartAddMin(){
 
       while(i<pList.length){
         // var v = pList.eq(i).index();
-        var sPrice=Number($('.cart-product').eq(i).find('.cart-product-price.total').text());
+        var sPrice=Number($('.cart-product').eq(i).find('.cart-product-price .total').text());
+        console.log('sPrice',sPrice)
+
         var fsPrice = Number(fsPrice)+Number(sPrice);
+        console.log('fsPrice',fsPrice)
+        
         i++;
         $('#totalPrice').html(fsPrice+'.00');
       }
 
       
       // 减少
+       //检测操作的是哪个商品
       $('.mz-adder-subtract').click(function(){
-           //检测操作的是哪个商品
-           var fzhi=$(this).parents('.cart-product').attr('id');
+           var fzhi=$(this).parents('.cart-product').index();
            var reg=/^pro\d$/;
            var prod=reg.exec(fzhi);
+           // console.log('fzhi',fzhi)
 
            //商品展示个数、减号、超过数量的文本
-           var $mText = $(this).parents('#'+prod).find('.cart-product-number-max');
-           var $nSub = $(this).parents('#'+prod).find('.mz-adder-subtract');
-           var $nInput = $(this).parents('#'+prod).find('.mz-adder-input');
+           var $mText = $('.cart-product').eq(fzhi).find('.cart-product-number-max');
+           // console.log('$mText',$mText)
+           var $nSub = $('.cart-product').eq(fzhi).find('.mz-adder-subtract');
+           var $nInput = $('.cart-product').eq(fzhi).find('.mz-adder-input');
+
+           // var selectNum =$('.cart-product').eq(fzhi).find('.mz-adder-input');
            // 商品数量
+           // var n=$nInput.val();
            var n=$nInput.val();
+           // console.log('nss',n,typeof(n))
+
            var num=parseInt(n)-1;
+           // console.log('num',num,typeof(num))
+
 
            //获取当前商品的单价
-           var $nPrice = $(this).parents('#'+prod).find('.cart-col-price .cart-product-price');
+           // var $nPrice = $(this).parents('#'+prod).find('.cart-col-price .cart-product-price');
+           var $nPrice = $('.cart-product').eq(fzhi).find('.cart-col-price .cart-product-price');
+           
            var npText = parseInt($nPrice.text());
-           // 获取当前商品的小计
-           var $sumPrice = $(this).parents('#'+prod).find('.cart-col-total  .cart-product-price');
+           // console.log('npText',npText,typeof(npText))
+           // 获取当前商品的合计
+           var $sumPrice = $('.cart-product').eq(fzhi).find('.cart-col-total .cart-product-price');
            var spText = parseInt($sumPrice.text());
 
            //单个商品的小计
            spText= spText - npText;
+           console.log('spText',spText,typeof(spText))
            if(spText<=0){
             spText = 0;
             $sumPrice.html(spText+'.00');
@@ -222,7 +251,7 @@ function cartAddMin(){
               $nSub.addClass('disabled');
 
               // return
-           }else if(num>1){
+           }else if(num>0){
               $nSub.removeClass('disabled');
               $nInput.val(num);
            }
@@ -231,55 +260,60 @@ function cartAddMin(){
            }
 
            //页面底部显示一共多少商品和选择的商品个数
-           var fsNum = Number( $('#totalCount').text());
-           var newNum = fsNum-1;
-           $('#totalCount').html(newNum);
+           // var fsNum = Number( $('#totalCount').text());
+           // var newNum = fsNum-1;
+           // $('#totalCount').html(newNum);
 
            //页面底部总和
-           var fPrice=$('#totalPrice').text();
-           var regs=/\d+/;
-           var sfPrice= Number(regs.exec(fPrice));
+           // var fPrice=$('#totalPrice').text();
+           // var regs=/\d+/;
+           // var sfPrice= Number(regs.exec(fPrice));
 
            //算出新的总价格
-           var nsfPrice=spText+sfPrice;
-           if(nsfPrice<=0){
-            nsfPrice = 0;
-           $('#totalPrice').html(nsfPrice+'.00');
-           console.log('减少1',nsfPrice)
-           }else{
-           $('#totalPrice').html(nsfPrice+'.00');
-           console.log('减少2',nsfPrice)
-           }
+           // var nsfPrice=spText+sfPrice;
+           // if(nsfPrice<=0){
+           //  nsfPrice = 0;
+           // $('#totalPrice').html(nsfPrice+'.00');
+           // console.log('减少1',nsfPrice)
+           // }else{
+           // $('#totalPrice').html(nsfPrice+'.00');
+           // console.log('减少2',nsfPrice)
+        // }
 
       })
       //增加
       $('.mz-adder-add').click(function(){
            //检测操作的是哪个商品
-           var fzhi=$(this).parents('.cart-product').attr('id');
+           var fzhi=$(this).parents('.cart-product').index();
            var reg=/^pro\d$/;
            var prod=reg.exec(fzhi);
+           // console.log('fzhi',fzhi)
 
            //商品展示个数、加号、超过数量的文本
-           var $nAdd = $(this).parents('#'+prod).find('.mz-adder-add');
-           var $nSub = $(this).parents('#'+prod).find('.mz-adder-subtract');
-           var $nInput = $(this).parents('#'+prod).find('.mz-adder-input');
+           var $nAdd = $('.cart-product').eq(fzhi).find('.mz-adder-add');
+           // var $nSub = $('.cart-product').eq(fzhi).find('.mz-adder-add');
+           var $nInput = $('.cart-product').eq(fzhi).find('.mz-adder-input');
            var n=$nInput.val();
-           var $mText = $(this).parents('#'+prod).find('.cart-product-number-max');
+           var $mText = $('.cart-product').eq(fzhi).find('.cart-product-number-max');
            var num=parseInt(n)+1;
+           // console.log('num',num,typeof(num))
+           // console.log('$nAdd',$nAdd,typeof($nAdd))
 
            //获取当前商品的单价和小计
-           var $nPrice = $(this).parents('#'+prod).find('.cart-col-price .cart-product-price');
+           var $nPrice = $('.cart-product').eq(fzhi).find('.cart-col-price .cart-product-price');
            var npText = parseInt($nPrice.text());
-           var $sumPrice = $(this).parents('#'+prod).find('.cart-col-total  .cart-product-price');
+           // console.log('npText',npText,typeof(npText))
+           
+           var $sumPrice = $('.cart-product').eq(fzhi).find('.cart-col-total  .cart-product-price');
            var spText = parseInt($sumPrice.text());
-
 
            
            //商品增加操作
-           if(num>1){ 
-                $nSub.removeClass('disabled');
+           if(num<5){ 
+                $nAdd.removeClass('disabled');
+                $mText.removeClass('show');
+                // $mText.text();
                 $nInput.val(num);
-
            }
            if(num==5){
                 $nAdd.addClass('disabled');
@@ -292,56 +326,63 @@ function cartAddMin(){
                 $mText.addClass('show');
                 $mText.text("限购5件");
                 $nInput.val(5);
-               return false;
+                return false;
            }
            //单个商品的小计
            spText= spText + npText;
+           console.log('spText',spText,typeof(spText))
+
            $sumPrice.html(spText+'.00');
            
            // console.log(num);
 
            //页面底部显示一共多少商品和选择的商品个数
-           var fsNum = Number( $('#totalCount').text());
-           var newNum = fsNum+1;
-           $('#totalCount').html(newNum);
+           // var fsNum = Number( $('#totalCount').text());
+           // var newNum = fsNum+1;
+           // $('#totalCount').html(newNum);
 
 
            //页面底部总和
-           var fPrice=$('#totalPrice').text();
-           var regs=/\d+/;
-           var sfPrice= Number(regs.exec(fPrice));
+           // var fPrice=$('#totalPrice').text();
+           // var regs=/\d+/;
+           // var sfPrice= Number(regs.exec(fPrice));
 
 
            //算出新的总价格
-           var nsfPrice=spText+sfPrice;
-           $('#totalPrice').html(nsfPrice+'.00');
-           console.log('nsfPrice',nsfPrice)
-      })
+           // var nsfPrice=spText+sfPrice;
+           // $('#totalPrice').html(nsfPrice+'.00');
+           // console.log('nsfPrice',nsfPrice)
+        })
+
+
+
+
+
 
       //叉号删除商品
 
-      $('.cart-product-remove').click(function(){
-            // //获取商品个数
-            // var geshu=Number($(this).parents('.zhanshi1').find('.yi1').text());
-            // //获取商品价格
-            // var dqjinbi=$(this).parents('.zhanshi1').find('.jiage').text();
-            // var reg=/\d+/;
-            // var dqjb=Number(reg.exec(dqjinbi));
-            // //获取总共价格
-            // var zgjinbi=$('.jine').find('h4 span').text();
-            // var regs=/\d+/;
-            // var zgjb=Number(regs.exec(zgjinbi));
-            // //求出新的价格
-            // var newjinbi=zgjb-dqjb*geshu;
-            // //赋值
-            // $('.jine').find('h4 span').html(newjinbi+'.00');
-            // //求出商品个数
-            // var gs=Number($('.zg h5 span').text());
-            // var newgs=gs-geshu;
-            // $('.zg h4 span').html(newgs);
-            // $('.zg h5 span').html(newgs);
-            $(this).parents('.cart-product').remove();
-      })
+    $('.cart-product-remove').click(function(){
+          // //获取商品个数
+          // var geshu=Number($(this).parents('.zhanshi1').find('.yi1').text());
+          // //获取商品价格
+          // var dqjinbi=$(this).parents('.zhanshi1').find('.jiage').text();
+          // var reg=/\d+/;
+          // var dqjb=Number(reg.exec(dqjinbi));
+          // //获取总共价格
+          // var zgjinbi=$('.jine').find('h4 span').text();
+          // var regs=/\d+/;
+          // var zgjb=Number(regs.exec(zgjinbi));
+          // //求出新的价格
+          // var newjinbi=zgjb-dqjb*geshu;
+          // //赋值
+          // $('.jine').find('h4 span').html(newjinbi+'.00');
+          // //求出商品个数
+          // var gs=Number($('.zg h5 span').text());
+          // var newgs=gs-geshu;
+          // $('.zg h4 span').html(newgs);
+          // $('.zg h5 span').html(newgs);
+          $(this).parents('.cart-product').remove();
+    })
 
     
 }// 数量增加减少E 
