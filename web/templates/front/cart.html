@@ -169,7 +169,7 @@
 								</td>
 								<!-- 单件合计 -->
 								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
-									<span class="cart-product-price total" id="totals">{% cheng v.price v.num %}</span>
+									<span class="cart-product-price total" id="totals" >{% cheng v.price v.num %}</span>
 								</td>
 								<!-- 操作 -->
 								<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">
@@ -364,6 +364,7 @@
     </div>
     <!-- 返回顶部 E-->
     <script>
+
         var welcome = document.getElementById('welcome');
         var we = welcome.innerText;
         if(we){
@@ -375,6 +376,7 @@
     </script>
 	{% block 'js' %}
 	 <script type="text/javascript">
+	 // tests();
         //回顶部
   		backTop();
   		//全选
@@ -388,7 +390,6 @@
   				return;
   			}
   			g = $(this).parent().find('input').attr('did')
-  			// g = $('.mz-adder-num').attr('gid')
   			console.log('g',g)
   			$.get("{% url 'cartedit' %}",{num:n,gid:g},function(data){
   				console.log(data)

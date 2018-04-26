@@ -114,53 +114,117 @@
 /*购物车--------------------------------------------*/ 
 var buyid = []
 var buynum
+// var goodstotal = document.getElementById('totalPrice')
+// var Goodstotal = goodstotal.innerHTML;
+// console.log('Goodstotal',Goodstotal)
+// console.log('goodstotal',goodstotal,typeof(goodstotal))
+var danprice=0
+var dannum=0
+var zongprice = 0
+var zongprices = 0
 
+// function alltoatl(){
 
+// }
 
+// function tests(){
+//     $('.mz-checkbox').click(function(){
+//         console.log('触发')
+//             console.log('总价',zongprices)
+//         // var numms = $('.cart-col-select2 .checked').length
+//         if($(this).hasClass('.checked')){
+    
+//         }
+//         // console.log('numms',numms)
+    
+//     })
+//     }
 //选择框操作
 function allSelect(){
  
   var aee = false;
   var see = false;
-  
+  var lis = {}
   // 全选
     $('.JSelectAll .mz-checkbox').click(function(){
         if(aee == false){
             $('.JSelectAll .mz-checkbox').addClass('checked');
+            console.log('a')
             $('.cart-col-select2 .mz-checkbox').addClass('checked');
+            console.log('b')
             aee = true;
         }else{
             $('.JSelectAll .mz-checkbox').removeClass('checked');
             $('.cart-col-select2 .mz-checkbox').removeClass('checked');
+            $('#totalPrice').html('0.00');
+            console.log('c')
             aee = false;
         };
     });
   
     //单选
     $('.cart-col-select2 .mz-checkbox').click(function(){
+        // 单选切换
         $(this).toggleClass('checked');
+        // 获取选中商品的索引
         var selectindex = $(this).parents('.cart-product').index()
-        buyid.push(selectindex)
-        buynum= buyid.length
+        // buyid.push(selectindex)
+        // buynum= buyid.length
         // console.log('buynum1',buynum)
         // console.log('buyid',buyid)
         // console.log('selectindex',selectindex,typeof(selectindex))
+        // 选中商品的数量
         var count = $(".cart-col-select2 .checked").length;
+        console.log('count1',count)
+        // 所有商品的数量
         var countall = $(".cart-col-select2").length;
+        console.log('count2',countall)
+        // 当所有商品都被单击选中时
         if(count==countall){
+            // 选中全选
             $('.JSelectAll .mz-checkbox').addClass('checked');
+
         }else{
             $('.JSelectAll .mz-checkbox').removeClass('checked');
-      };
+
+    };
     // 计算选中商品数量和总价
-    // var nums = buyid.length
+    // 获取当前索引
+    var fzhi=$(this).parents('.cart-product').index();
+    // 获取单价对象
+    var $nPrice = $('.cart-product').eq(fzhi).find('.cart-col-price .cart-product-price');
+    // 单个商品单价
+    var npText = parseInt($nPrice.text());
+    // 获取数量对象
+    var $nInput = $('.cart-product').eq(fzhi).find('.mz-adder-input');
+    console.log('$nInput',$nInput)
+    // 获取商品的数量
+    var n=$nInput.val();
+    // 商品数量转为数字类型
+    var num=parseInt(n);
+    // 单个商品小计
+    zongprice = npText * num
+    
+    lis[fzhi] = zongprice
+    console.log(lis)
+    // 底部总价
+    zongprices = zongprices+zongprice
+    // $('#totalPrice').text() = zongprices
+    console.log('zongprices',zongprices)
+    $('#totalPrice').html(zongprices);
+
+
+    // console.log('danprice',danprice)
+    // console.log('dannum',dannum)
+    console.log('zongprice',zongprice)
+    nums = buyid.length
     // console.log('nums',nums,typeof(nums))
     // var sinTotals = Number($(this).parents('.cart-product').children().find('.cart-product-price ').text())
     // console.log('sinTotals',sinTotals,typeof(sinTotals))
     });
     $('.mz-checkbox').change(function(){
         $(this).parents('.cart-product').children('.total')
-        if(){}
+        // if(){}
 
     })
 };
@@ -171,11 +235,17 @@ function cartAddMin(){
       console.log('pList',pList.length)
       // console.log('buynum2',buynum)
       //选中商品数量
-      var count = $(".cart-col-select2 .checked").length;
+      var count = $(".cart-col-select2 .checked");
+      console.log('count2',count.length)
 
       //页面底部显示初始值
       //初始商品总数量
+       
+
       $('#totalCount').html(count);
+        // 初始商品总价格
+      $('#totalPrice').html('0.00');
+
 
       var fsnC = Number( $('#totalCount').text());
       console.log('fsnC',fsnC)
@@ -193,19 +263,21 @@ function cartAddMin(){
         console.log('fsPrice',fsPrice)
         
         i++;
-        $('#totalPrice').html(fsPrice+'.00');
+        // $('#totalPrice').html(fsPrice+'.00');
       }
 
       
       // 减少
        //检测操作的是哪个商品
       $('.mz-adder-subtract').click(function(){
+            // 获取当前操作商品元素的索引
            var fzhi=$(this).parents('.cart-product').index();
-           var reg=/^pro\d$/;
-           var prod=reg.exec(fzhi);
+           // var reg=/^pro\d$/;
+           // var prod=reg.exec(fzhi);
            // console.log('fzhi',fzhi)
 
-           //商品展示个数、减号、超过数量的文本
+           //商品展示个数、减号、超过数量的文本(对象)
+
            var $mText = $('.cart-product').eq(fzhi).find('.cart-product-number-max');
            // console.log('$mText',$mText)
            var $nSub = $('.cart-product').eq(fzhi).find('.mz-adder-subtract');
@@ -216,16 +288,17 @@ function cartAddMin(){
            // var n=$nInput.val();
            var n=$nInput.val();
            // console.log('nss',n,typeof(n))
-
            var num=parseInt(n)-1;
+           dannum = num
            // console.log('num',num,typeof(num))
 
 
            //获取当前商品的单价
            // var $nPrice = $(this).parents('#'+prod).find('.cart-col-price .cart-product-price');
            var $nPrice = $('.cart-product').eq(fzhi).find('.cart-col-price .cart-product-price');
-           
+           // 转为数字类型
            var npText = parseInt($nPrice.text());
+           danprice = npText
            // console.log('npText',npText,typeof(npText))
            // 获取当前商品的合计
            var $sumPrice = $('.cart-product').eq(fzhi).find('.cart-col-total .cart-product-price');
@@ -259,25 +332,25 @@ function cartAddMin(){
               $mText.removeClass('show');
            }
 
-           //页面底部显示一共多少商品和选择的商品个数
-           // var fsNum = Number( $('#totalCount').text());
-           // var newNum = fsNum-1;
-           // $('#totalCount').html(newNum);
+        //    //页面底部显示一共多少商品和选择的商品个数
+        //    var fsNum = Number( $('#totalCount').text());
+        //    var newNum = fsNum-1;
+        //    $('#totalCount').html(newNum);
 
-           //页面底部总和
-           // var fPrice=$('#totalPrice').text();
-           // var regs=/\d+/;
-           // var sfPrice= Number(regs.exec(fPrice));
+        //    //页面底部总和
+        //    var fPrice=$('#totalPrice').text();
+        //    var regs=/\d+/;
+        //    var sfPrice= Number(regs.exec(fPrice));
 
-           //算出新的总价格
-           // var nsfPrice=spText+sfPrice;
-           // if(nsfPrice<=0){
-           //  nsfPrice = 0;
-           // $('#totalPrice').html(nsfPrice+'.00');
-           // console.log('减少1',nsfPrice)
-           // }else{
-           // $('#totalPrice').html(nsfPrice+'.00');
-           // console.log('减少2',nsfPrice)
+        //    //算出新的总价格
+        //    var nsfPrice=spText+sfPrice;
+        //    if(nsfPrice<=0){
+        //     nsfPrice = 0;
+        //    $('#totalPrice').html(nsfPrice+'.00');
+        //    console.log('减少1',nsfPrice)
+        //    }else{
+        //    $('#totalPrice').html(nsfPrice+'.00');
+        //    console.log('减少2',nsfPrice)
         // }
 
       })
@@ -336,19 +409,19 @@ function cartAddMin(){
            
            // console.log(num);
 
-           //页面底部显示一共多少商品和选择的商品个数
+           // //页面底部显示一共多少商品和选择的商品个数
            // var fsNum = Number( $('#totalCount').text());
            // var newNum = fsNum+1;
            // $('#totalCount').html(newNum);
 
 
-           //页面底部总和
+           // //页面底部总和
            // var fPrice=$('#totalPrice').text();
            // var regs=/\d+/;
            // var sfPrice= Number(regs.exec(fPrice));
 
 
-           //算出新的总价格
+           // //算出新的总价格
            // var nsfPrice=spText+sfPrice;
            // $('#totalPrice').html(nsfPrice+'.00');
            // console.log('nsfPrice',nsfPrice)
@@ -357,7 +430,8 @@ function cartAddMin(){
 
 
 
-
+    
+  
 
       //叉号删除商品
 
@@ -447,6 +521,7 @@ function nLogin(){
           console.log(v)
      })
 }
+
 
 
 
