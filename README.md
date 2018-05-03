@@ -1,8 +1,10 @@
-# project
-django  project
 
-使用Django框架搭建商城，
-后段
-会员，分类，商品，订单，的增，删，改，查。
+前台账号密码
+登录路由 127.0.0.1:8000/user/index
+zhangsan 123456
 
-列表的分页，内容的检索，
+
+后台账号密码
+登录路由 127.0.0.1:8000/myadmin/login
+东东  123456
+lixiaoliu  123456
