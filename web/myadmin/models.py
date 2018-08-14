@@ -28,7 +28,7 @@ class Types(models.Model):
 	
 # 商品
 class Goods(models.Model):
-	typeid = models.ForeignKey(to='Types', to_field='id')
+	typeid = models.ForeignKey(to='Types', to_field='id',on_delete=models.CASCADE)
 	goods = models.CharField(max_length=32)
 	company = models.CharField(max_length=50, null=True)
 	descr = models.TextField(null=True)
@@ -44,7 +44,7 @@ class Goods(models.Model):
 
 # 订单
 class Orders(models.Model):
-	uid = models.ForeignKey('Users',to_field="id")
+	uid = models.ForeignKey('Users',to_field="id",on_delete=models.CASCADE)
 	linkman = models.CharField(max_length=32)
 	address = models.CharField(max_length=255)
 	code = models.CharField(max_length=6)
@@ -59,8 +59,8 @@ class Orders(models.Model):
 
 # 订单详情
 class Detail(models.Model):
-	orderid = models.OneToOneField(Orders)
-	goodsid = models.ForeignKey('Goods',to_field="id")
+	orderid = models.OneToOneField(Orders,on_delete=models.CASCADE)
+	goodsid = models.ForeignKey('Goods',to_field="id",on_delete=models.CASCADE)
 	name = models.CharField(max_length=32)
 	price = models.DecimalField(max_digits=6, decimal_places=2)
 	num = models.IntegerField()
